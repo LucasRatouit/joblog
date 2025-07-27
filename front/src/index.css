@@ -41,80 +41,292 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
-:root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-}
-
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
-}
-
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
+  :root {
+    /* Shadcn/ui variables */
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 221 83% 53%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222.2 84% 4.9%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222.2 84% 4.9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221 83% 53%;
+    --chart-1: 221 83% 53%;
+    --chart-2: 262 83% 58%;
+    --chart-3: 196 75% 88%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.75rem;
+
+    /* JobLog custom color palette - Tailwind v4 style */
+    --color-joblog-50: 239 100% 97%;
+    --color-joblog-100: 219 100% 95%;
+    --color-joblog-200: 214 95% 93%;
+    --color-joblog-300: 213 97% 87%;
+    --color-joblog-400: 213 94% 78%;
+    --color-joblog-500: 217 91% 60%;
+    --color-joblog-600: 221 83% 53%;
+    --color-joblog-700: 224 76% 48%;
+    --color-joblog-800: 226 71% 40%;
+    --color-joblog-900: 224 64% 33%;
+    --color-joblog-950: 226 56% 20%;
+
+    /* JobLog semantic colors */
+    --color-joblog-primary: var(--color-joblog-600);
+    --color-joblog-primary-foreground: 0 0% 100%;
+    --color-joblog-secondary: var(--color-joblog-100);
+    --color-joblog-secondary-foreground: var(--color-joblog-900);
   }
+
+  .dark {
+    /* Shadcn/ui dark mode */
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 222.2 84% 4.9%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 217 91% 60%;
+    --chart-1: 217 91% 60%;
+    --chart-2: 262 83% 58%;
+    --chart-3: 196 75% 88%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+
+    /* JobLog dark mode adjustments */
+    --color-joblog-primary: var(--color-joblog-500);
+    --color-joblog-primary-foreground: var(--color-joblog-950);
+    --color-joblog-secondary: var(--color-joblog-900);
+    --color-joblog-secondary-foreground: var(--color-joblog-100);
+  }
+
+  * {
+    border-color: hsl(var(--border));
+  }
+
   body {
-    @apply bg-background text-foreground;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+  }
+}
+
+@layer components {
+  /* JobLog utility classes */
+  .joblog-gradient {
+    background: linear-gradient(135deg, hsl(var(--color-joblog-600)) 0%, hsl(262 83% 58%) 100%);
+  }
+
+  .joblog-gradient-hover:hover {
+    background: linear-gradient(135deg, hsl(var(--color-joblog-700)) 0%, hsl(262 80% 50%) 100%);
+  }
+
+  .joblog-text-gradient {
+    background: linear-gradient(135deg, hsl(var(--color-joblog-600)) 0%, hsl(262 83% 58%) 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  .joblog-card {
+    background-color: hsl(0 0% 100% / 0.7);
+    backdrop-filter: blur(12px);
+    border: 0;
+    box-shadow: 0 25px 50px -12px hsl(0 0% 0% / 0.05);
+  }
+
+  .dark .joblog-card {
+    background-color: hsl(240 10% 20% / 0.7);
+  }
+
+  .joblog-card-hover {
+    transition: all 0.3s ease;
+  }
+
+  .joblog-card-hover:hover {
+    box-shadow: 0 25px 50px -12px hsl(0 0% 0% / 0.15);
+    transform: translateY(-4px);
+  }
+
+  /* JobLog button variants */
+  .btn-joblog {
+    background: linear-gradient(135deg, hsl(var(--color-joblog-600)) 0%, hsl(262 83% 58%) 100%);
+    color: hsl(var(--color-joblog-primary-foreground));
+    box-shadow: 0 10px 25px -5px hsl(var(--color-joblog-600) / 0.3);
+    transition: all 0.3s ease;
+  }
+
+  .btn-joblog:hover {
+    background: linear-gradient(135deg, hsl(var(--color-joblog-700)) 0%, hsl(262 80% 50%) 100%);
+    box-shadow: 0 20px 40px -10px hsl(var(--color-joblog-600) / 0.4);
+    transform: translateY(-1px);
+  }
+
+  .btn-joblog-outline {
+    border: 2px solid hsl(var(--color-joblog-600));
+    color: hsl(var(--color-joblog-600));
+    background: transparent;
+  }
+
+  .btn-joblog-outline:hover {
+    background: hsl(var(--color-joblog-600));
+    color: hsl(var(--color-joblog-primary-foreground));
+  }
+
+  .dark .btn-joblog-outline {
+    border-color: hsl(var(--color-joblog-500));
+    color: hsl(var(--color-joblog-500));
+  }
+
+  .dark .btn-joblog-outline:hover {
+    background: hsl(var(--color-joblog-500));
+    color: hsl(var(--color-joblog-950));
+  }
+
+  .btn-joblog-ghost {
+    color: hsl(var(--color-joblog-600));
+    background: transparent;
+  }
+
+  .btn-joblog-ghost:hover {
+    background: hsl(var(--color-joblog-50));
+    color: hsl(var(--color-joblog-700));
+  }
+
+  .dark .btn-joblog-ghost {
+    color: hsl(var(--color-joblog-400));
+  }
+
+  .dark .btn-joblog-ghost:hover {
+    background: hsl(var(--color-joblog-900) / 0.2);
+    color: hsl(var(--color-joblog-300));
+  }
+}
+
+@layer utilities {
+  /* JobLog color utilities */
+  .text-joblog-50 {
+    color: hsl(var(--color-joblog-50));
+  }
+  .text-joblog-100 {
+    color: hsl(var(--color-joblog-100));
+  }
+  .text-joblog-200 {
+    color: hsl(var(--color-joblog-200));
+  }
+  .text-joblog-300 {
+    color: hsl(var(--color-joblog-300));
+  }
+  .text-joblog-400 {
+    color: hsl(var(--color-joblog-400));
+  }
+  .text-joblog-500 {
+    color: hsl(var(--color-joblog-500));
+  }
+  .text-joblog-600 {
+    color: hsl(var(--color-joblog-600));
+  }
+  .text-joblog-700 {
+    color: hsl(var(--color-joblog-700));
+  }
+  .text-joblog-800 {
+    color: hsl(var(--color-joblog-800));
+  }
+  .text-joblog-900 {
+    color: hsl(var(--color-joblog-900));
+  }
+  .text-joblog-950 {
+    color: hsl(var(--color-joblog-950));
+  }
+
+  .bg-joblog-50 {
+    background-color: hsl(var(--color-joblog-50));
+  }
+  .bg-joblog-100 {
+    background-color: hsl(var(--color-joblog-100));
+  }
+  .bg-joblog-200 {
+    background-color: hsl(var(--color-joblog-200));
+  }
+  .bg-joblog-300 {
+    background-color: hsl(var(--color-joblog-300));
+  }
+  .bg-joblog-400 {
+    background-color: hsl(var(--color-joblog-400));
+  }
+  .bg-joblog-500 {
+    background-color: hsl(var(--color-joblog-500));
+  }
+  .bg-joblog-600 {
+    background-color: hsl(var(--color-joblog-600));
+  }
+  .bg-joblog-700 {
+    background-color: hsl(var(--color-joblog-700));
+  }
+  .bg-joblog-800 {
+    background-color: hsl(var(--color-joblog-800));
+  }
+  .bg-joblog-900 {
+    background-color: hsl(var(--color-joblog-900));
+  }
+  .bg-joblog-950 {
+    background-color: hsl(var(--color-joblog-950));
+  }
+
+  .border-joblog-50 {
+    border-color: hsl(var(--color-joblog-50));
+  }
+  .border-joblog-100 {
+    border-color: hsl(var(--color-joblog-100));
+  }
+  .border-joblog-200 {
+    border-color: hsl(var(--color-joblog-200));
+  }
+  .border-joblog-300 {
+    border-color: hsl(var(--color-joblog-300));
+  }
+  .border-joblog-400 {
+    border-color: hsl(var(--color-joblog-400));
+  }
+  .border-joblog-500 {
+    border-color: hsl(var(--color-joblog-500));
+  }
+  .border-joblog-600 {
+    border-color: hsl(var(--color-joblog-600));
+  }
+  .border-joblog-700 {
+    border-color: hsl(var(--color-joblog-700));
+  }
+  .border-joblog-800 {
+    border-color: hsl(var(--color-joblog-800));
+  }
+  .border-joblog-900 {
+    border-color: hsl(var(--color-joblog-900));
+  }
+  .border-joblog-950 {
+    border-color: hsl(var(--color-joblog-950));
   }
 }
