@@ -15,14 +15,6 @@ const router = createBrowserRouter([
     element: <p>Dashboard</p>,
   },
   {
-    path: "auth",
-    // Component: () => <p>Auth Page</p>,
-    children: [
-      { path: "login", element: <p>Login Page</p> },
-      { path: "register", element: <p>Register Page</p> },
-    ],
-  },
-  {
     path: "*",
     element: <p>Not Found</p>,
   },
