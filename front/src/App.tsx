@@ -6,7 +6,7 @@ import AuthForm from "./components/authForm";
 function App() {
   return (
     <div
-      className="h-screen pt-72 flex flex-col items-center text-center
+      className="h-screen flex flex-col justify-center items-center text-center
                     bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100
                     dark:from-gray-900 dark:via-gray-800 dark:to-gray-900
                     "
