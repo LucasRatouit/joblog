@@ -3,7 +3,7 @@
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "resolvePackageJsonExports": true,
-    "esModuleInterop": true,
+    "esModuleInterop": false, // default: true
     "isolatedModules": true,
     "declaration": true,
     "removeComments": true,
@@ -20,6 +20,8 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
-    "noFallthroughCasesInSwitch": false
-  }
+    "noFallthroughCasesInSwitch": false,
+    "typeRoots": ["./src/types" ,"./node_modules/@types"]
+  },
+  "include": ["src/**/*", "src/types/**/*.d.ts"]
 }
