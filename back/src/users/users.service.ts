@@ -12,15 +12,27 @@ export class UsersService {
     private jwtService: JwtService,
   ) {}
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
+  async create(
+    createUserDto: CreateUserDto,
+  ): Promise<{ user: User; token: string }> {
     const hash = await bcrypt.hash(createUserDto.password, 10);
 
-    return this.prisma.user.create({
+    const userExists = await this.prisma.user.findUnique({
+      where: { email: createUserDto.email },
+    });
+    if (userExists) throw new Error('Utilisateur déjà existant');
+
+    const user = await this.prisma.user.create({
       data: {
         email: createUserDto.email,
         password: hash,
       },
     });
+
+    const payload = { id: user.id, email: user.email };
+    const token = await this.jwtService.signAsync(payload);
+
+    return { user, token };
   }
 
   async userConnection(
