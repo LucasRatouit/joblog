@@ -35,7 +35,7 @@ export class UsersService {
     return { user, token };
   }
 
-  async userConnection(
+  async userLogin(
     email: string,
     password: string,
   ): Promise<{ token: string; user: User }> {

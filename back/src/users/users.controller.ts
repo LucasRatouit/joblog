@@ -21,7 +21,7 @@ export class UsersController {
       maxAge: 60 * 1000, // 1 minute
     });
 
-    return { user };
+    return { user, message: 'Inscription réussie' };
   }
 
   @Post('login')
@@ -29,7 +29,7 @@ export class UsersController {
     @Body() loginDto: { email: string; password: string },
     @Res({ passthrough: true }) res: Response,
   ) {
-    const { token, user } = await this.usersService.userConnection(
+    const { token, user } = await this.usersService.userLogin(
       loginDto.email,
       loginDto.password,
     );
@@ -41,6 +41,12 @@ export class UsersController {
       maxAge: 60 * 1000, // 1 minute
     });
 
-    return { user };
+    return { user, message: 'Connexion réussie' };
+  }
+
+  @Post('logout')
+  logout(@Res({ passthrough: true }) res: Response) {
+    res.clearCookie('token');
+    return { message: 'Déconnexion réussie' };
   }
 }
