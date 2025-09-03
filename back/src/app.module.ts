@@ -3,9 +3,10 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 // import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { LoggerMiddleware } from './middleware/logger.middleware';
+import { JobsModule } from './jobs/jobs.module';
 
 @Module({
-  imports: [UsersModule],
+  imports: [UsersModule, JobsModule],
   // controllers: [AppController],
   // providers: [AppService],
 })
