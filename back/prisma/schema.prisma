@@ -14,3 +14,24 @@ model User {
   email    String @unique
   password String
 }
+
+model Job {
+  id            String    @id @default(uuid()) @db.Uuid
+  title         String
+  company       String
+  status        JobStatus @default(PENDING)
+  location      String?
+  description   String?
+  email         String?
+  phone         String?
+  candidacyDate DateTime? // Date de candidature
+  interviewDate DateTime? // Date d'entretien
+  followUpDate  DateTime? // Date de relance
+}
+
+enum JobStatus {
+  PENDING // En attente
+  INTERVIEW // Entretien
+  FOLLOW_UP // Rappeler
+  ACCEPTED // Accepté
+}
