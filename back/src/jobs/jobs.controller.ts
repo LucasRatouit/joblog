@@ -1,42 +1,55 @@
 import {
   Controller,
-  // Get,
-  // Post,
-  // Body,
-  // Patch,
-  // Param,
-  // Delete,
+  Get,
+  Req,
+  UseGuards,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
 } from '@nestjs/common';
 import { JobsService } from './jobs.service';
-// import { CreateJobDto } from './dto/create-job.dto';
-// import { UpdateJobDto } from './dto/update-job.dto';
+import type { Request } from 'express';
+import { AuthGuard } from 'src/guard/auth.guard';
+import { CreateJobDto } from './dto/create-job.dto';
+import { UpdateJobDto } from './dto/update-job.dto';
 
 @Controller('jobs')
+@UseGuards(AuthGuard)
 export class JobsController {
   constructor(private readonly jobsService: JobsService) {}
 
-  // @Post()
-  // create(@Body() createJobDto: CreateJobDto) {
-  //   return this.jobsService.create(createJobDto);
-  // }
+  @Get()
+  findAll(@Req() req: Request) {
+    const userId = req.user?.token.id;
+    return this.jobsService.findAll(userId!);
+  }
 
-  // @Get()
-  // findAll() {
-  //   return this.jobsService.findAll();
-  // }
+  @Post()
+  create(@Body() createJobDto: CreateJobDto, @Req() req: Request) {
+    const userId = req.user?.token.id;
+    return this.jobsService.create(createJobDto, userId!);
+  }
 
   // @Get(':id')
   // findOne(@Param('id') id: string) {
   //   return this.jobsService.findOne(+id);
   // }
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateJobDto: UpdateJobDto) {
-  //   return this.jobsService.update(+id, updateJobDto);
-  // }
+  @Patch(':id')
+  update(
+    @Param('id') id: string,
+    @Body() updateJobDto: UpdateJobDto,
+    @Req() req: Request,
+  ) {
+    const userId = req.user?.token.id;
+    return this.jobsService.update(id, updateJobDto, userId!);
+  }
 
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.jobsService.remove(+id);
-  // }
+  @Delete(':id')
+  remove(@Param('id') id: string, @Req() req: Request) {
+    const userId = req.user?.token.id;
+    return this.jobsService.remove(id, userId!);
+  }
 }

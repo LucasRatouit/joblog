@@ -1,6 +1,5 @@
 generator client {
   provider      = "prisma-client-js"
-  output        = "../generated/prisma"
   binaryTargets = ["native", "linux-arm64-openssl-3.0.x"]
 }
 
@@ -13,6 +12,7 @@ model User {
   id       String @id @default(uuid()) @db.Uuid
   email    String @unique
   password String
+  jobs     Job[]
 }
 
 model Job {
@@ -27,6 +27,9 @@ model Job {
   candidacyDate DateTime? // Date de candidature
   interviewDate DateTime? // Date d'entretien
   followUpDate  DateTime? // Date de relance
+
+  userId String @db.Uuid
+  user   User   @relation(fields: [userId], references: [id])
 }
 
 enum JobStatus {
