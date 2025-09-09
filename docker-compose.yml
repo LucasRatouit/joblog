@@ -33,3 +33,15 @@ services:
       - "8080:8080"
     depends_on:
       - db
+
+  front:
+    build:
+      context: ./front
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./front:/app
+      - /app/node_modules
+    command: ["npm", "run", "dev"]
+    depends_on:
+      - back
