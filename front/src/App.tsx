@@ -44,6 +44,8 @@ function App() {
             <AuthForm
               title="Créer un compte"
               description="Commencez votre parcours avec JobLog"
+              submitText="Créer mon compte"
+              isLogin={false}
             />
           </Dialog>
           <Dialog>
@@ -58,6 +60,8 @@ function App() {
             <AuthForm
               title="Se connecter"
               description="Accédez à votre dashboard JobLog"
+              submitText="Me connecter"
+              isLogin={true}
             />
           </Dialog>
         </div>

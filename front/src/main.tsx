@@ -5,6 +5,7 @@ import App from "./App.tsx";
 import { createBrowserRouter, RouterProvider } from "react-router";
 import { ThemeProvider } from "./components/theme-provider.tsx";
 import Dashboard from "./pages/dashboard.tsx";
+import { Toaster } from "./components/ui/sonner.tsx";
 
 const router = createBrowserRouter([
   {
@@ -26,5 +27,6 @@ createRoot(document.getElementById("root")!).render(
     <ThemeProvider defaultTheme="system" storageKey="joblog-theme">
       <RouterProvider router={router} />
     </ThemeProvider>
+    <Toaster position="top-right" richColors />
   </StrictMode>
 );

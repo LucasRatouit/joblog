@@ -2,6 +2,10 @@ import { Controller, Post, Body, Res } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import type { Response } from 'express';
+import { User } from '@prisma/client';
+
+type Success = { user: User; token: string };
+type Error = { error: string; message: string };
 
 @Controller('users')
 export class UsersController {
@@ -12,16 +16,20 @@ export class UsersController {
     @Body() createUserDto: CreateUserDto,
     @Res({ passthrough: true }) res: Response,
   ) {
-    const { user, token } = await this.usersService.create(createUserDto);
+    const data: Success | Error = await this.usersService.create(createUserDto);
+    if ('error' in data) {
+      res.status(400).send(data);
+      return;
+    }
 
-    res.cookie('token', token, {
+    res.cookie('token', data.token, {
       httpOnly: true,
       sameSite: 'strict',
       secure: process.env.NODE_ENV === 'prod',
       maxAge: 60 * 1000, // 1 minute
     });
 
-    return { user, message: 'Inscription réussie' };
+    res.status(201).send({ message: 'Utilisateur créé avec succès' });
   }
 
   @Post('login')
@@ -29,24 +37,28 @@ export class UsersController {
     @Body() loginDto: { email: string; password: string },
     @Res({ passthrough: true }) res: Response,
   ) {
-    const { token, user } = await this.usersService.userLogin(
+    const data: Success | Error = await this.usersService.userLogin(
       loginDto.email,
       loginDto.password,
     );
+    if ('error' in data) {
+      res.status(400).send(data);
+      return;
+    }
 
-    res.cookie('token', token, {
+    res.cookie('token', data.token, {
       httpOnly: true,
       sameSite: 'strict',
       secure: process.env.NODE_ENV === 'prod',
       maxAge: 60 * 1000, // 1 minute
     });
 
-    return { user, message: 'Connexion réussie' };
+    res.status(200).send({ message: 'Connexion réussie' });
   }
 
   @Post('logout')
   logout(@Res({ passthrough: true }) res: Response) {
     res.clearCookie('token');
-    return { message: 'Déconnexion réussie' };
+    res.status(200).send({ message: 'Déconnexion réussie' });
   }
 }

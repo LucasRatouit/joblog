@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { PrismaService } from 'src/prisma.service';
 import { User } from './entities/user.entity';
@@ -14,13 +14,15 @@ export class UsersService {
 
   async create(
     createUserDto: CreateUserDto,
-  ): Promise<{ user: User; token: string }> {
+  ): Promise<
+    { user: User; token: string } | { error: string; message: string }
+  > {
     const hash = await bcrypt.hash(createUserDto.password, 10);
 
     const userExists = await this.prisma.user.findUnique({
       where: { email: createUserDto.email },
     });
-    if (userExists) throw new Error('Utilisateur déjà existant');
+    if (userExists) return { error: 'email', message: 'Utilisateur existant' };
 
     const user = await this.prisma.user.create({
       data: {
@@ -38,15 +40,17 @@ export class UsersService {
   async userLogin(
     email: string,
     password: string,
-  ): Promise<{ token: string; user: User }> {
+  ): Promise<
+    { token: string; user: User } | { error: string; message: string }
+  > {
     const user = await this.prisma.user.findUnique({
       where: { email: email },
     });
-    if (!user) throw new UnauthorizedException('Utilisateur introuvable');
+    if (!user) return { error: 'email', message: 'Utilisateur introuvable' };
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid)
-      throw new UnauthorizedException('Mot de passe incorrect');
+      return { error: 'password', message: 'Mot de passe incorrect' };
 
     const payload = { id: user.id, email: user.email };
     const token = await this.jwtService.signAsync(payload);
