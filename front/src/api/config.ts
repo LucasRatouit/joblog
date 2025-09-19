@@ -1,2 +1,1 @@
-// export const apiEndpoint = process.env.API_ENDPOINT;
-export const apiEndpoint = "http://localhost:3000";
+export const apiEndpoint = import.meta.env.VITE_API_URL;
