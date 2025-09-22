@@ -1,8 +1,9 @@
-import { Controller, Post, Body, Res } from '@nestjs/common';
+import { Controller, Post, Body, Res, Get, Req } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import type { Response } from 'express';
+import type { Request, Response } from 'express';
 import { User } from '@prisma/client';
+import * as jwt from 'jsonwebtoken';
 
 type Success = { user: User; token: string };
 type Error = { error: string; message: string };
@@ -10,6 +11,23 @@ type Error = { error: string; message: string };
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
+
+  @Get()
+  isLoggedIn(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
+    const token = req.cookies['token'] as string;
+
+    if (!token)
+      res.status(401).send({ error: 'token', message: 'Aucun token valide' });
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
+
+    if (!decoded)
+      return res
+        .status(401)
+        .send({ error: 'token', message: 'Token invalide' });
+
+    res.status(200).send({ message: 'Token valide', user: req.user });
+  }
 
   @Post()
   async create(

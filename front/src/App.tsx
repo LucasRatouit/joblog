@@ -2,8 +2,18 @@ import { ArrowRight, CheckCircleIcon, Sparkles } from "lucide-react";
 import { Button } from "./components/ui/button";
 import { Dialog, DialogTrigger } from "./components/ui/dialog";
 import AuthForm from "./components/authForm";
+import { useEffect, useState } from "react";
+import { isLoggedIn } from "./api/services/user";
 
 function App() {
+  const [isLoginedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    isLoggedIn().then(() => {
+      setIsLoggedIn(true);
+    });
+  }, []);
+
   return (
     <div
       className="h-screen flex flex-col justify-center items-center text-center
@@ -34,37 +44,47 @@ function App() {
           d'emploi. Gardez une trace de toutes vos candidatures en un seul
           endroit.
         </p>
-        <div className="flex justify-center space-x-4">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button className="text-lg w-80 py-7 cursor-pointer">
-                Commencer gratuitement <ArrowRight />
-              </Button>
-            </DialogTrigger>
-            <AuthForm
-              title="Créer un compte"
-              description="Commencez votre parcours avec JobLog"
-              submitText="Créer mon compte"
-              isLogin={false}
-            />
-          </Dialog>
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button
-                variant="outline"
-                className="text-lg w-80 py-7 cursor-pointer"
-              >
-                Se connecter
-              </Button>
-            </DialogTrigger>
-            <AuthForm
-              title="Se connecter"
-              description="Accédez à votre dashboard JobLog"
-              submitText="Me connecter"
-              isLogin={true}
-            />
-          </Dialog>
-        </div>
+        {isLoginedIn ? (
+          <Button
+            variant="outline"
+            className="text-lg w-[640px] py-7 cursor-pointer"
+            onClick={() => (window.location.href = "/dashboard")}
+          >
+            Mon dashboard
+          </Button>
+        ) : (
+          <div className="flex justify-center space-x-4">
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button className="text-lg w-80 py-7 cursor-pointer">
+                  Commencer gratuitement <ArrowRight />
+                </Button>
+              </DialogTrigger>
+              <AuthForm
+                title="Créer un compte"
+                description="Commencez votre parcours avec JobLog"
+                submitText="Créer mon compte"
+                isLogin={false}
+              />
+            </Dialog>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="text-lg w-80 py-7 cursor-pointer"
+                >
+                  Se connecter
+                </Button>
+              </DialogTrigger>
+              <AuthForm
+                title="Se connecter"
+                description="Accédez à votre dashboard JobLog"
+                submitText="Me connecter"
+                isLogin={true}
+              />
+            </Dialog>
+          </div>
+        )}
         <div className="text-gray-400 flex justify-center gap-x-10">
           <span className="flex items-center gap-x-2">
             <CheckCircleIcon className="text-green-500 size-4" /> Gratuit pour
