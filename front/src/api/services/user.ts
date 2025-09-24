@@ -1,8 +1,10 @@
 import axios from "axios";
 import { apiEndpoint } from "../config";
 
+const routeUrl = `${apiEndpoint}/users`;
+
 export const isLoggedIn = async () => {
-  const { data } = await axios.get(`${apiEndpoint}/users`, {
+  const { data } = await axios.get(routeUrl, {
     withCredentials: true,
   });
   return data;
@@ -10,7 +12,7 @@ export const isLoggedIn = async () => {
 
 export const userLogin = async (email: string, password: string) => {
   const { data } = await axios.post(
-    `${apiEndpoint}/users/login`,
+    `${routeUrl}/login`,
     {
       email,
       password,
@@ -22,7 +24,7 @@ export const userLogin = async (email: string, password: string) => {
 
 export const userRegister = async (email: string, password: string) => {
   const { data } = await axios.post(
-    `${apiEndpoint}/users`,
+    routeUrl,
     {
       email,
       password,
