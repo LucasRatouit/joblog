@@ -44,7 +44,7 @@ export class UsersController {
       httpOnly: true,
       sameSite: 'strict',
       secure: process.env.NODE_ENV === 'prod',
-      maxAge: 60 * 1000, // 1 minute
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 jours
     });
 
     res.status(201).send({ message: 'Utilisateur créé avec succès' });
@@ -68,7 +68,7 @@ export class UsersController {
       httpOnly: true,
       sameSite: 'strict',
       secure: process.env.NODE_ENV === 'prod',
-      maxAge: 60 * 1000, // 1 minute
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 jours
     });
 
     res.status(200).send({ message: 'Connexion réussie' });
