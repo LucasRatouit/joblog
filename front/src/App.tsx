@@ -1,103 +1,73 @@
-import { ArrowRight, CheckCircleIcon, Sparkles } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "./components/ui/button";
 import { Dialog, DialogTrigger } from "./components/ui/dialog";
 import AuthForm from "./components/authForm";
-import { useEffect, useState } from "react";
-import { isLoggedIn } from "./api/services/user";
 
 function App() {
-  const [isLoginedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    isLoggedIn().then(() => {
-      setIsLoggedIn(true);
-    });
-  }, []);
-
   return (
-    <div
-      className="h-screen flex flex-col justify-center items-center text-center
-                    bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100
-                    dark:from-gray-900 dark:via-gray-800 dark:to-gray-900
-                    "
-    >
-      <div className="max-w-[800px] space-y-8">
+    <div className="bg-background h-screen flex flex-col justify-center items-center text-center">
+      <div className="z-10 max-w-4xl space-y-8 relative">
+        {/* BLUR START */}
         <div
-          className="w-min mx-auto px-4 py-2 text-nowrap text-sm
-                      border border-joblog-800 rounded-full relative"
-        >
-          <div className="h-full w-full bg-joblog-700 opacity-15 rounded-full absolute top-0 right-0" />
-          <p className="text-joblog-300 flex gap-x-2 items-center font-medium relative">
-            <Sparkles className="size-4 text-joblog-500" />
-            Nouvelle version disponible
+          className="-z-10 w-[600px] h-[600px] bg-primary/40 blur-3xl rounded-full absolute -top-30 -left-30"
+          style={{
+            animation: "blurAnimation1 30s ease-in-out infinite",
+          }}
+        />
+        <div
+          className="-z-10 w-7/12 h-full bg-primary/30 blur-2xl rounded-full absolute -bottom-32 right-0"
+          style={{
+            animation: "blurAnimation2 10s ease-in-out infinite",
+          }}
+        />
+        {/* BLUR END */}
+        <div className="w-min mx-auto px-4 py-2 text-nowrap text-sm relative">
+          <div className="h-full w-full bg-primary/20 rounded-full absolute top-0 right-0" />
+          <div className="h-full w-full border border-primary/40 rounded-full absolute top-0 left-0" />
+          <p className="text-primary flex gap-x-2 items-center font-medium relative">
+            <Sparkles className="size-4" />
+            Première version récente
           </p>
         </div>
-        <h1
-          className="flex flex-col items-center
-      text-joblog-400 text-7xl font-bold"
-        >
-          Gérez vos candidatures{" "}
-          <span className="text-joblog-600">intelligemment</span>
+        <h1 className="text-white text-5xl sm:text-6xl lg:text-7xl font-bold">
+          Simplifiez votre processus de recherche de travail avec{" "}
+          <span className="text-primary">JobLog</span>
         </h1>
-        <p className="text-xl font-sans">
+        <p className="text-gray-400 text-2xl font-light">
           JobLog vous aide à organiser, suivre et optimiser vos recherches
           d'emploi. Gardez une trace de toutes vos candidatures en un seul
           endroit.
         </p>
-        {isLoginedIn ? (
-          <Button
-            variant="outline"
-            className="text-lg w-[640px] py-7 cursor-pointer"
-            onClick={() => (window.location.href = "/dashboard")}
-          >
-            Mon dashboard
-          </Button>
-        ) : (
-          <div className="flex justify-center space-x-4">
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button className="text-lg w-80 py-7 cursor-pointer">
-                  Commencer gratuitement <ArrowRight />
-                </Button>
-              </DialogTrigger>
-              <AuthForm
-                title="Créer un compte"
-                description="Commencez votre parcours avec JobLog"
-                submitText="Créer mon compte"
-                isLogin={false}
-              />
-            </Dialog>
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button
-                  variant="outline"
-                  className="text-lg w-80 py-7 cursor-pointer"
-                >
-                  Se connecter
-                </Button>
-              </DialogTrigger>
-              <AuthForm
-                title="Se connecter"
-                description="Accédez à votre dashboard JobLog"
-                submitText="Me connecter"
-                isLogin={true}
-              />
-            </Dialog>
-          </div>
-        )}
-        <div className="text-gray-400 flex justify-center gap-x-10">
-          <span className="flex items-center gap-x-2">
-            <CheckCircleIcon className="text-green-500 size-4" /> Gratuit pour
-            toujours
-          </span>
-          <span className="flex items-center gap-x-2">
-            <CheckCircleIcon className="text-green-500 size-4" />
-            Aucune carte requise
-          </span>
-          <span className="flex items-center gap-x-2">
-            <CheckCircleIcon className="text-green-500 size-4" />
-            Configuration facile
-          </span>
+        <div className="w-full flex justify-center space-x-4">
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button className="text-lg px-20 py-6 cursor-pointer">
+                Commencer gratuitement <ArrowRight />
+              </Button>
+            </DialogTrigger>
+            <AuthForm
+              title="Créer un compte"
+              description="Commencez votre parcours avec JobLog"
+              submitText="Créer mon compte"
+              isLogin={false}
+            />
+          </Dialog>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button
+                variant="ghost"
+                className="text-white! text-lg py-6 cursor-pointer"
+              >
+                Se connecter
+              </Button>
+            </DialogTrigger>
+            <AuthForm
+              title="Se connecter"
+              description="Accédez à votre dashboard JobLog"
+              submitText="Me connecter"
+              isLogin={true}
+            />
+          </Dialog>
         </div>
       </div>
     </div>
