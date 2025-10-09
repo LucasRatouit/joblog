@@ -25,7 +25,7 @@ const AuthForm = (props: {
   return (
     <DialogContent className="bg-card">
       <form
-        className="space-y-3"
+        className="space-y-3 text-secondary-foreground"
         onSubmit={handleSubmit(async (data) => {
           if (props.isLogin) {
             await userLogin(data.email, data.password)

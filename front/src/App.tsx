@@ -6,16 +6,16 @@ import AuthForm from "./components/authForm";
 function App() {
   return (
     <div className="bg-background h-screen flex flex-col justify-center items-center text-center">
-      <div className="z-10 max-w-4xl space-y-8 relative">
+      <div className="z-10 max-w-4xl flex flex-col mx-3 space-y-6 md:space-y-8 relative">
         {/* BLUR START */}
         <div
-          className="-z-10 w-[600px] h-[600px] bg-primary/40 blur-3xl rounded-full absolute -top-30 -left-30"
+          className="-z-10 w-[200px] h-[200px] md:w-[400px] md:h-[400px] lg:w-[600px] lg:h-[600px] bg-primary/40 blur-3xl rounded-full absolute top-0 left-10 md:-top-15 md:-left-0 lg:-top-30 lg:-left-30"
           style={{
             animation: "blurAnimation1 30s ease-in-out infinite",
           }}
         />
         <div
-          className="-z-10 w-7/12 h-full bg-primary/30 blur-2xl rounded-full absolute -bottom-32 right-0"
+          className="-z-10 w-[100px] h-[100px] md:w-[300px] md:h-[300px] lg:w-[500px] lg:h-[500px] bg-primary/30 blur-2xl rounded-full absolute -bottom-32 right-0"
           style={{
             animation: "blurAnimation2 10s ease-in-out infinite",
           }}
@@ -29,7 +29,7 @@ function App() {
             Première version récente
           </p>
         </div>
-        <h1 className="text-white text-5xl sm:text-6xl lg:text-7xl font-bold">
+        <h1 className="text-secondary-foreground text-5xl sm:text-6xl lg:text-7xl font-bold">
           Simplifiez votre processus de recherche de travail avec{" "}
           <span className="text-primary">JobLog</span>
         </h1>
@@ -38,10 +38,10 @@ function App() {
           d'emploi. Gardez une trace de toutes vos candidatures en un seul
           endroit.
         </p>
-        <div className="w-full flex justify-center space-x-4">
+        <div className="w-full  flex flex-col gap-y-2 md:flex-row justify-center space-x-4">
           <Dialog>
             <DialogTrigger asChild>
-              <Button className="text-lg px-20 py-6 cursor-pointer">
+              <Button className="w-full md:w-min text-lg px-20 py-6 cursor-pointer">
                 Commencer gratuitement <ArrowRight />
               </Button>
             </DialogTrigger>
@@ -55,8 +55,8 @@ function App() {
           <Dialog>
             <DialogTrigger asChild>
               <Button
-                variant="ghost"
-                className="text-white! text-lg py-6 cursor-pointer"
+                variant="outline"
+                className="text-secondary-foreground text-lg py-6 cursor-pointer"
               >
                 Se connecter
               </Button>
