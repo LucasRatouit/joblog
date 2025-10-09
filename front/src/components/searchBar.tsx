@@ -12,7 +12,7 @@ import {
 
 const SearchBar = () => {
   return (
-    <Card className="px-3 py-3 flex flex-row">
+    <Card className="border-0 px-2 py-2 flex flex-row gap-2">
       <Input
         className="w-full"
         placeholder="Rechercher par entreprise ou poste"
@@ -27,7 +27,7 @@ const SearchBar = () => {
           <SelectItem value="option3">Option 3</SelectItem>
         </SelectContent>
       </Select>
-      <Button className="w-1/6">
+      <Button className="min-w-min w-1/6 cursor-pointer">
         <Plus /> Nouvelle candidature
       </Button>
     </Card>

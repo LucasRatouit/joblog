@@ -24,7 +24,7 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <ThemeProvider defaultTheme="system" storageKey="joblog-theme">
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <RouterProvider router={router} />
     </ThemeProvider>
     <Toaster position="top-right" richColors />
