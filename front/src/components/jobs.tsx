@@ -13,11 +13,11 @@ import { statusGradientColor } from "../api/config";
 
 const Jobs = (props: { jobs: Job[] }) => {
   return (
-    <>
+    <div className="flex flex-col gap-y-1.5">
       {props.jobs.map((job) => (
         <Card
           key={job.id}
-          className="z-10 border-0 pl-6 pr-4 flex flex-row gap-x-2 relative"
+          className="z-10 border-0 pl-6 pr-4 py-4 flex flex-row gap-x-2 relative"
         >
           <div
             className={`-z-10 bg-gradient-to-b ${statusGradientColor(job.status)} w-full h-full rounded-lg absolute top-0 left-0`}
@@ -75,7 +75,7 @@ const Jobs = (props: { jobs: Job[] }) => {
           </div>
         </Card>
       ))}
-    </>
+    </div>
   );
 };
 

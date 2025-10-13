@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import InfoCardList from "../components/infoCard";
 import SearchBar from "../components/searchBar";
-import { userJobs } from "../api/services/job";
+import { type Job, userJobs } from "../api/services/job";
 import Jobs from "../components/jobs";
 import { Button } from "../components/ui/button";
 import { SunMoon } from "lucide-react";
 import { useTheme } from "../components/theme-provider";
 
 const Dashboard = () => {
-  const [jobs, setJobs] = useState([]);
+  const [jobs, setJobs] = useState<Job[]>([]);
 
   useEffect(() => {
     userJobs().then((data) => {
@@ -30,9 +30,9 @@ const Dashboard = () => {
       >
         <SunMoon />
       </Button>
-      <div className="max-w-[1200px] w-full mx-3 flex flex-col gap-y-5">
+      <div className="max-w-[1200px] w-full mx-3 flex flex-col gap-y-4">
         <InfoCardList jobs={jobs} />
-        <SearchBar />
+        <SearchBar setJobs={setJobs} />
         <Jobs jobs={jobs} />
       </div>
     </div>

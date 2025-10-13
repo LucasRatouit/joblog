@@ -9,8 +9,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
+import { Dialog, DialogTrigger } from "./ui/dialog";
+import JobForm from "./jobForm";
+import type { Job } from "../api/services/job";
 
-const SearchBar = () => {
+const SearchBar = (props: {
+  setJobs: React.Dispatch<React.SetStateAction<Job[]>>;
+}) => {
   return (
     <Card className="border-0 px-2 py-2 flex flex-row gap-2">
       <Input
@@ -27,9 +32,14 @@ const SearchBar = () => {
           <SelectItem value="option3">Option 3</SelectItem>
         </SelectContent>
       </Select>
-      <Button className="min-w-min w-1/6 cursor-pointer">
-        <Plus /> Nouvelle candidature
-      </Button>
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button className="min-w-min w-1/6 cursor-pointer">
+            <Plus /> Nouvelle candidature
+          </Button>
+        </DialogTrigger>
+        <JobForm setJobs={props.setJobs} />
+      </Dialog>
     </Card>
   );
 };
