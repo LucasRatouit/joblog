@@ -1,5 +1,6 @@
 import { useForm, type FieldValues } from "react-hook-form";
 import {
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -9,6 +10,7 @@ import {
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { createJob, userJobs, type Job } from "../api/services/job";
+import { toast } from "sonner";
 
 const JobForm = (props: {
   setJobs: React.Dispatch<React.SetStateAction<Job[]>>;
@@ -23,6 +25,7 @@ const JobForm = (props: {
           await createJob(data).then(() => {
             userJobs().then((data) => {
               props.setJobs(data);
+              toast.success("Poste créé avec succès");
             });
           });
         })}
@@ -76,7 +79,9 @@ const JobForm = (props: {
           {/* STATUS required */}
         </div>
         <DialogFooter>
-          <Button type="submit">Créer</Button>
+          <DialogClose asChild>
+            <Button type="submit">Créer</Button>
+          </DialogClose>
         </DialogFooter>
       </form>
     </DialogContent>

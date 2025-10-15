@@ -26,3 +26,7 @@ export const userJobs = async () => {
 export const createJob = async (job: FieldValues) => {
   await axios.post(routeUrl, job, { withCredentials: true });
 };
+
+export const deleteJob = async (id: string) => {
+  await axios.delete(`${routeUrl}/${id}`, { withCredentials: true });
+};

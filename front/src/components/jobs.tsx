@@ -8,10 +8,14 @@ import {
 } from "lucide-react";
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
-import type { Job } from "../api/services/job";
+import { deleteJob, type Job } from "../api/services/job";
 import { statusGradientColor } from "../api/config";
+import { toast } from "sonner";
 
-const Jobs = (props: { jobs: Job[] }) => {
+const Jobs = (props: {
+  jobs: Job[];
+  setJobs: React.Dispatch<React.SetStateAction<Job[]>>;
+}) => {
   return (
     <div className="flex flex-col gap-y-1.5">
       {props.jobs.map((job) => (
@@ -63,13 +67,24 @@ const Jobs = (props: { jobs: Job[] }) => {
             )}
           </div>
           <div className="flex flex-col gap-y-2 justify-center">
-            <Button variant="ghost" className="w-10 h-10">
+            <Button variant="ghost" className="w-10 h-10 cursor-pointer">
               <SquarePen />
             </Button>
-            <Button variant="ghost" className="w-10 h-10">
+            <Button variant="ghost" className="w-10 h-10 cursor-pointer">
               <ExternalLink />
             </Button>
-            <Button variant="ghost" className="w-10 h-10">
+            <Button
+              variant="destructive"
+              className="w-10 h-10 cursor-pointer"
+              onClick={() => {
+                deleteJob(job.id).then(() => {
+                  props.setJobs(
+                    props.jobs.filter((jobItem) => jobItem.id !== job.id)
+                  );
+                  toast.success("Job supprimé !");
+                });
+              }}
+            >
               <Trash2 />
             </Button>
           </div>
