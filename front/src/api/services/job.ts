@@ -19,14 +19,20 @@ export type Job = {
 };
 
 export const userJobs = async () => {
-  const { data } = await axios.get(routeUrl, { withCredentials: true });
-  return data;
+  return await axios
+    .get(routeUrl, { withCredentials: true })
+    .then((res) => res.data)
+    .catch(() => (window.location.href = "/"));
 };
 
 export const createJob = async (job: FieldValues) => {
-  await axios.post(routeUrl, job, { withCredentials: true });
+  await axios
+    .post(routeUrl, job, { withCredentials: true })
+    .catch(() => (window.location.href = "/"));
 };
 
 export const deleteJob = async (id: string) => {
-  await axios.delete(`${routeUrl}/${id}`, { withCredentials: true });
+  await axios
+    .delete(`${routeUrl}/${id}`, { withCredentials: true })
+    .catch(() => (window.location.href = "/"));
 };

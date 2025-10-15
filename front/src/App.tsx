@@ -2,8 +2,16 @@ import { ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "./components/ui/button";
 import { Dialog, DialogTrigger } from "./components/ui/dialog";
 import AuthForm from "./components/authForm";
+import { useEffect } from "react";
+import { isLoggedIn } from "./api/services/user";
 
 function App() {
+  useEffect(() => {
+    isLoggedIn().then(() => {
+      window.location.href = "/dashboard";
+    });
+  }, []);
+
   return (
     <div className="bg-background h-screen flex flex-col justify-center items-center text-center">
       <div className="z-10 max-w-4xl flex flex-col mx-3 space-y-6 md:space-y-8 relative">

@@ -11,8 +11,8 @@ const Dashboard = () => {
   const [jobs, setJobs] = useState<Job[]>([]);
 
   useEffect(() => {
-    userJobs().then((data) => {
-      setJobs(data);
+    userJobs().then((res) => {
+      setJobs(res);
     });
   }, []);
 

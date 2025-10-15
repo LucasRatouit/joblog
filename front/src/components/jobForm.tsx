@@ -23,8 +23,8 @@ const JobForm = (props: {
         className="space-y-4"
         onSubmit={handleSubmit(async (data) => {
           await createJob(data).then(() => {
-            userJobs().then((data) => {
-              props.setJobs(data);
+            userJobs().then((res) => {
+              props.setJobs(res);
               toast.success("Poste créé avec succès");
             });
           });
