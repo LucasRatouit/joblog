@@ -33,3 +33,13 @@ export const userRegister = async (email: string, password: string) => {
   );
   return data;
 };
+
+export const userLogout = async () => {
+  await axios.post(
+    `${routeUrl}/logout`,
+    {},
+    {
+      withCredentials: true,
+    }
+  );
+};

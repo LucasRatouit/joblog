@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider } from "react-router";
 import { ThemeProvider } from "./components/theme-provider.tsx";
 import Dashboard from "./pages/dashboard.tsx";
 import { Toaster } from "./components/ui/sonner.tsx";
+import { SidebarProvider } from "./components/ui/sidebar.tsx";
 
 const router = createBrowserRouter([
   {
@@ -25,8 +26,10 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <RouterProvider router={router} />
+      <SidebarProvider>
+        <RouterProvider router={router} />
+        <Toaster position="top-right" richColors />
+      </SidebarProvider>
     </ThemeProvider>
-    <Toaster position="top-right" richColors />
   </StrictMode>
 );
