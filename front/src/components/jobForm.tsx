@@ -1,21 +1,29 @@
-import { useForm, type FieldValues } from "react-hook-form";
+import { set, useForm, type FieldValues } from "react-hook-form";
 import {
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "./ui/dialog";
-import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { createJob, userJobs, type Job } from "../api/services/job";
 import { toast } from "sonner";
+import { useState } from "react";
+import AuthFormPage1 from "./authFormPage/authFormPage1";
+import AuthFormPage2 from "./authFormPage/authFormPage2";
+import AuthFormPage3 from "./authFormPage/authFormPage3";
 
 const JobForm = (props: {
   setJobs: React.Dispatch<React.SetStateAction<Job[]>>;
+  setAuthFormIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const { register, handleSubmit } = useForm<FieldValues>();
+  const { register, handleSubmit, reset } = useForm<FieldValues>();
+  const [numPageForm, setNumPageForm] = useState<number>(1);
+  const [requiredData, setRequiredData] = useState<{
+    title: string;
+    company: string;
+  }>({ title: "", company: "" });
 
   return (
     <DialogContent>
@@ -25,6 +33,9 @@ const JobForm = (props: {
           await createJob(data).then(() => {
             userJobs().then((res) => {
               props.setJobs(res);
+              props.setAuthFormIsOpen(false);
+              reset();
+              setNumPageForm(1);
               toast.success("Poste créé avec succès");
             });
           });
@@ -36,52 +47,54 @@ const JobForm = (props: {
             Remplissez le formulaire pour créer une offre
           </DialogDescription>
         </DialogHeader>
-        <div className="space-y-1">
-          <Input
-            {...register("title", { required: true })}
-            type="text"
-            placeholder="Titre du job"
-          />
-          <Input
-            {...register("company", { required: true })}
-            type="text"
-            placeholder="Nom de l'entreprise"
-          />
-          <Input {...register("location")} type="text" placeholder="Lieu" />
-          <Input
-            {...register("description")}
-            type="text"
-            placeholder="Description"
-          />
-          <Input {...register("email")} type="email" placeholder="Email" />
-          <Input {...register("phone")} type="tel" placeholder="Téléphone" />
-          <Input
-            {...register("candidacyDate", {
-              setValueAs: (value) => (value === "" ? null : value),
-            })}
-            type="date"
-            placeholder="Date de candidature"
-          />
-          <Input
-            {...register("interviewDate", {
-              setValueAs: (value) => (value === "" ? null : value),
-            })}
-            type="datetime-local"
-            placeholder="Date d'entretien"
-          />
-          <Input
-            {...register("followUpDate", {
-              setValueAs: (value) => (value === "" ? null : value),
-            })}
-            type="date"
-            placeholder="Date de relance"
-          />
-          {/* STATUS required */}
+        <div className="space-y-2">
+          {numPageForm === 1 && (
+            <AuthFormPage1
+              register={register}
+              requiredData={requiredData}
+              setRequiredData={setRequiredData}
+            />
+          )}
+          {numPageForm === 2 && <AuthFormPage2 register={register} />}
+          {numPageForm === 3 && <AuthFormPage3 register={register} />}
         </div>
-        <DialogFooter>
-          <DialogClose asChild>
-            <Button type="submit">Créer</Button>
-          </DialogClose>
+        <DialogFooter className="justify-between! items-end">
+          <div className="text-muted-foreground">{numPageForm}/3</div>
+          <div className="flex gap-x-2">
+            {numPageForm < 3 && (
+              <Button type="submit" className="cursor-pointer">
+                Passer et créer l'offre
+              </Button>
+            )}
+            {numPageForm > 1 && (
+              <Button
+                type="button"
+                variant="secondary"
+                className="cursor-pointer"
+                onClick={() => setNumPageForm(numPageForm - 1)}
+              >
+                Précedent
+              </Button>
+            )}
+            {numPageForm < 3 && (
+              <Button
+                type="button"
+                variant="secondary"
+                disabled={
+                  requiredData.title === "" || requiredData.company === ""
+                }
+                className="cursor-pointer"
+                onClick={() => setNumPageForm(numPageForm + 1)}
+              >
+                Suivant
+              </Button>
+            )}
+            {numPageForm === 3 && (
+              <Button type="submit" className="cursor-pointer">
+                Créer l'offre
+              </Button>
+            )}
+          </div>
         </DialogFooter>
       </form>
     </DialogContent>
