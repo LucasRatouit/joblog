@@ -18,6 +18,7 @@ const authFormPage3 = ({
     <>
       <Input
         {...register("candidacyDate", {
+          valueAsDate: true,
           setValueAs: (value) => (value === "" ? null : value),
         })}
         type="date"
@@ -25,6 +26,7 @@ const authFormPage3 = ({
       />
       <Input
         {...register("interviewDate", {
+          valueAsDate: true,
           setValueAs: (value) => (value === "" ? null : value),
         })}
         type="datetime-local"
@@ -32,6 +34,7 @@ const authFormPage3 = ({
       />
       <Input
         {...register("followUpDate", {
+          valueAsDate: true,
           setValueAs: (value) => (value === "" ? null : value),
         })}
         type="date"
