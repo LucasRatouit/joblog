@@ -18,7 +18,7 @@ const JobForm = (props: {
   setJobs: React.Dispatch<React.SetStateAction<Job[]>>;
   setAuthFormIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const { register, handleSubmit, reset } = useForm<FieldValues>();
+  const { register, handleSubmit, reset, control } = useForm<FieldValues>();
   const [numPageForm, setNumPageForm] = useState<number>(1);
   const [requiredData, setRequiredData] = useState<{
     title: string;
@@ -30,6 +30,7 @@ const JobForm = (props: {
       <form
         className="space-y-4"
         onSubmit={handleSubmit(async (data) => {
+          console.log(data);
           await createJob(data).then(() => {
             userJobs().then((res) => {
               props.setJobs(res);
@@ -55,7 +56,9 @@ const JobForm = (props: {
               setRequiredData={setRequiredData}
             />
           )}
-          {numPageForm === 2 && <AuthFormPage2 register={register} />}
+          {numPageForm === 2 && (
+            <AuthFormPage2 register={register} control={control} />
+          )}
           {numPageForm === 3 && <AuthFormPage3 register={register} />}
         </div>
         <DialogFooter className="justify-between! items-end">
