@@ -94,7 +94,7 @@ const Jobs = (props: {
               </div>
             </div>
             {job.description && (
-              <p className="bg-zinc-800 text-gray-400 p-3 rounded-lg">
+              <p className="bg-zinc-100 dark:bg-zinc-700 text-gray-400 dark:text-gray-300 p-3 rounded-lg">
                 {job.description}
               </p>
             )}
