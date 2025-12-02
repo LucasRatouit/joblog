@@ -10,13 +10,14 @@ import { useSidebar } from "../components/ui/sidebar";
 
 const Dashboard = () => {
   const [jobs, setJobs] = useState<Job[]>([]);
+  const [search, setSearch] = useState<string>("");
   const { toggleSidebar } = useSidebar();
 
   useEffect(() => {
-    userJobs().then((res) => {
+    userJobs({ search }).then((res) => {
       setJobs(res);
     });
-  }, []);
+  }, [search]);
 
   return (
     <div
@@ -29,7 +30,7 @@ const Dashboard = () => {
       </Button>
       <div className="max-w-[1200px] w-full mx-3 flex flex-col gap-y-4">
         <InfoCardList jobs={jobs} />
-        <SearchBar setJobs={setJobs} />
+        <SearchBar setJobs={setJobs} setSearch={setSearch} />
         <Jobs jobs={jobs} setJobs={setJobs} />
       </div>
     </div>

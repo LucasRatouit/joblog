@@ -16,6 +16,7 @@ import { useState } from "react";
 
 const SearchBar = (props: {
   setJobs: React.Dispatch<React.SetStateAction<Job[]>>;
+  setSearch: React.Dispatch<React.SetStateAction<string>>;
 }) => {
   const [AuthFormIsOpen, setAuthFormIsOpen] = useState(false);
 
@@ -24,6 +25,7 @@ const SearchBar = (props: {
       <Input
         className="w-full"
         placeholder="Rechercher par entreprise ou poste"
+        onChange={(e) => props.setSearch(e.target.value)}
       />
       <Select>
         <SelectTrigger className="w-2/6">

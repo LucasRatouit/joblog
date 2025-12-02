@@ -8,6 +8,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { JobsService } from './jobs.service';
 import type { Request } from 'express';
@@ -21,9 +22,9 @@ export class JobsController {
   constructor(private readonly jobsService: JobsService) {}
 
   @Get()
-  findAll(@Req() req: Request) {
+  findAll(@Req() req: Request, @Query('search') search: string) {
     const userId = req.user?.token.id;
-    return this.jobsService.findAll(userId!);
+    return this.jobsService.findAll(userId!, search);
   }
 
   @Post()
