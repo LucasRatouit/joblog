@@ -13,10 +13,12 @@ import { Dialog } from "./ui/dialog";
 import JobForm from "./jobForm";
 import type { Job } from "../api/services/job";
 import { useState } from "react";
+import { statusEnumToString } from "../api/config";
 
 const SearchBar = (props: {
   setJobs: React.Dispatch<React.SetStateAction<Job[]>>;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
+  setStatus: React.Dispatch<React.SetStateAction<string>>;
 }) => {
   const [AuthFormIsOpen, setAuthFormIsOpen] = useState(false);
 
@@ -27,14 +29,27 @@ const SearchBar = (props: {
         placeholder="Rechercher par entreprise ou poste"
         onChange={(e) => props.setSearch(e.target.value)}
       />
-      <Select>
+      <Select
+        defaultValue="*"
+        onValueChange={(value) => props.setStatus(value)}
+      >
         <SelectTrigger className="w-2/6">
-          <SelectValue placeholder="Sélectionner une option" />
+          <SelectValue placeholder="Sélectionner un statut" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="option1">Option 1</SelectItem>
-          <SelectItem value="option2">Option 2</SelectItem>
-          <SelectItem value="option3">Option 3</SelectItem>
+          <SelectItem value="*">Tous les statuts</SelectItem>
+          <SelectItem value="PENDING">
+            {statusEnumToString("PENDING")}
+          </SelectItem>
+          <SelectItem value="INTERVIEW">
+            {statusEnumToString("INTERVIEW")}
+          </SelectItem>
+          <SelectItem value="FOLLOW_UP">
+            {statusEnumToString("FOLLOW_UP")}
+          </SelectItem>
+          <SelectItem value="ACCEPTED">
+            {statusEnumToString("ACCEPTED")}
+          </SelectItem>
         </SelectContent>
       </Select>
       <Dialog open={AuthFormIsOpen} onOpenChange={setAuthFormIsOpen}>

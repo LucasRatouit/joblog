@@ -18,10 +18,19 @@ export type Job = {
   followUpDate?: Date;
 };
 
-export const userJobs = async ({ search }: { search: string }) => {
+export const userJobs = async ({
+  search,
+  status,
+}: {
+  search: string;
+  status: string;
+}) => {
   console.log("Fetching jobs with search:", search);
   return await axios
-    .get(routeUrl, { withCredentials: true, params: { search: search } })
+    .get(routeUrl, {
+      withCredentials: true,
+      params: { search: search, status: status },
+    })
     .then((res) => res.data)
     .catch(() => (window.location.href = "/"));
 };

@@ -22,9 +22,13 @@ export class JobsController {
   constructor(private readonly jobsService: JobsService) {}
 
   @Get()
-  findAll(@Req() req: Request, @Query('search') search: string) {
+  findAll(
+    @Req() req: Request,
+    @Query('search') search: string,
+    @Query('status') status: string,
+  ) {
     const userId = req.user?.token.id;
-    return this.jobsService.findAll(userId!, search);
+    return this.jobsService.findAll(userId!, search, status);
   }
 
   @Post()

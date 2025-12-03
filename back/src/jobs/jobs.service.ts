@@ -8,7 +8,7 @@ import { UpdateJobDto } from './dto/update-job.dto';
 export class JobsService {
   constructor(private prisma: PrismaService) {}
 
-  findAll(id: string, search: string): Promise<Job[]> {
+  findAll(id: string, search: string, status: string): Promise<Job[]> {
     return this.prisma.job.findMany({
       where: {
         userId: id,
@@ -18,6 +18,7 @@ export class JobsService {
             { title: { contains: term, mode: 'insensitive' } },
           ],
         })),
+        status: status !== '*' ? (status as Job['status']) : undefined,
       },
     });
   }
