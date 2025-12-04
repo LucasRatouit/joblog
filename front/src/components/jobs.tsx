@@ -45,13 +45,13 @@ const Jobs = (props: {
             </div>
             <div className="z-10 grid gap-3 grid-cols-[repeat(auto-fill,minmax(200px,1fr))]">
               <div className="w-full py-2 flex gap-x-3 flex-wrap items-center rounded-lg relative">
-                <div className="-z-20 bg-green-400 opacity-15 w-full h-full rounded-lg absolute" />
-                <Calendar className="text-green-400 w-5 h-5 ml-2" />
+                <div className="-z-20 bg-zinc-100 dark:bg-zinc-700 w-full h-full rounded-lg absolute" />
+                <Calendar className="w-5 h-5 ml-2" />
                 <div className="flex flex-col">
                   <p className="text-gray-400 text-nowrap text-[10px]">
                     Date de candidature
                   </p>
-                  <span className="text-green-400 text-sm">
+                  <span className="text-gray-400 text-sm">
                     {job.candidacyDate
                       ? job.candidacyDate.toDateString()
                       : "xxx"}
@@ -59,13 +59,13 @@ const Jobs = (props: {
                 </div>
               </div>
               <div className="w-full py-2 flex gap-x-3 flex-wrap items-center rounded-lg relative">
-                <div className="-z-20 bg-green-400 opacity-15 w-full h-full rounded-lg absolute" />
-                <Calendar className="text-green-400 w-5 h-5 ml-2" />
+                <div className="-z-20 bg-zinc-100 dark:bg-zinc-700 w-full h-full rounded-lg absolute" />
+                <Calendar className="w-5 h-5 ml-2" />
                 <div className="flex flex-col">
                   <p className="text-gray-400 text-nowrap text-[10px]">
                     Date de l'entretien
                   </p>
-                  <span className="text-green-400 text-sm">
+                  <span className="text-gray-400 text-sm">
                     {job.interviewDate
                       ? new Date(job.interviewDate).toLocaleString("fr-FR", {
                           day: "2-digit",
@@ -79,13 +79,13 @@ const Jobs = (props: {
                 </div>
               </div>
               <div className="w-full py-2 flex gap-x-3 flex-wrap items-center rounded-lg relative">
-                <div className="-z-20 bg-green-400 opacity-15 w-full h-full rounded-lg absolute" />
-                <Calendar className="text-green-400 w-5 h-5 ml-2" />
+                <div className="-z-20 bg-zinc-100 dark:bg-zinc-700 w-full h-full rounded-lg absolute" />
+                <Calendar className="w-5 h-5 ml-2" />
                 <div className="flex flex-col">
                   <p className="text-gray-400 text-nowrap text-[10px]">
                     Date de relance
                   </p>
-                  <span className="text-green-400 text-sm">
+                  <span className="text text-sm">
                     {job.followUpDate
                       ? new Date(job.followUpDate).toDateString()
                       : "xxx"}
@@ -94,7 +94,7 @@ const Jobs = (props: {
               </div>
             </div>
             {job.description && (
-              <p className="bg-zinc-100 dark:bg-zinc-700 text-gray-400 dark:text-gray-300 p-3 rounded-lg">
+              <p className="bg-zinc-100 dark:bg-zinc-700 text-gray-500 dark:text-gray-300 p-3 rounded-lg">
                 {job.description}
               </p>
             )}
