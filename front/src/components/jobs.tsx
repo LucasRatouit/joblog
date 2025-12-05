@@ -51,7 +51,7 @@ const Jobs = (props: {
                   <p className="text-gray-400 text-nowrap text-[10px]">
                     Date de candidature
                   </p>
-                  <span className="text-gray-400 text-sm">
+                  <span className="text-sm">
                     {job.candidacyDate
                       ? job.candidacyDate.toDateString()
                       : "xxx"}
@@ -65,7 +65,7 @@ const Jobs = (props: {
                   <p className="text-gray-400 text-nowrap text-[10px]">
                     Date de l'entretien
                   </p>
-                  <span className="text-gray-400 text-sm">
+                  <span className="text-sm">
                     {job.interviewDate
                       ? new Date(job.interviewDate).toLocaleString("fr-FR", {
                           day: "2-digit",
@@ -100,12 +100,26 @@ const Jobs = (props: {
             )}
           </div>
           <div className="flex flex-col gap-y-2 justify-center">
-            <Button variant="ghost" className="w-10 h-10 cursor-pointer">
+            <Button
+              disabled
+              variant="ghost"
+              className="w-10 h-10 cursor-pointer"
+            >
               <SquarePen />
             </Button>
-            <Button variant="ghost" className="w-10 h-10 cursor-pointer">
+            <Button
+              disabled={!job.redirectUrl}
+              variant="ghost"
+              className="w-10 h-10 cursor-pointer"
+              onClick={() => {
+                if (job.redirectUrl) {
+                  window.open(job.redirectUrl, "_blank");
+                }
+              }}
+            >
               <ExternalLink />
             </Button>
+            {/* Détail de l'offre */}
             <Button
               variant="destructive"
               className="w-10 h-10 cursor-pointer"

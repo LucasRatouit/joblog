@@ -82,8 +82,13 @@ const AuthFormPage2 = ({
           placeholder="Description"
         />
       </div>
-
-      {/* STATUS required */}
+      <div className="space-y-1">
+        <Input
+          {...register("redirectUrl")}
+          type="url"
+          placeholder="URL de redirection"
+        />
+      </div>
     </>
   );
 };

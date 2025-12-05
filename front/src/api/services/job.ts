@@ -13,6 +13,7 @@ export type Job = {
   description?: string;
   email?: string;
   phone?: string;
+  redirectUrl?: string;
   candidacyDate?: Date;
   interviewDate?: Date;
   followUpDate?: Date;
@@ -25,7 +26,6 @@ export const userJobs = async ({
   search: string;
   status: string;
 }) => {
-  console.log("Fetching jobs with search:", search);
   return await axios
     .get(routeUrl, {
       withCredentials: true,

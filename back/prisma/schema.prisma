@@ -24,6 +24,7 @@ model Job {
   description   String?
   email         String?
   phone         String?
+  redirectUrl   String?
   candidacyDate DateTime? // Date de candidature
   interviewDate DateTime? // Date d'entretien
   followUpDate  DateTime? // Date de relance

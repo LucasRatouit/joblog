@@ -5,6 +5,7 @@ export class CreateJobDto {
   description?: string;
   email?: string;
   phone?: string;
+  redirectUrl?: string;
   candidacyDate?: Date;
   interviewDate?: Date;
   followUpDate?: Date;

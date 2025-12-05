@@ -7,6 +7,7 @@ export class Job {
   description?: string;
   email?: string;
   phone?: string;
+  redirectUrl?: string;
   candidacyDate?: Date; // Date de candidature
   interviewDate?: Date; // Date d'entretien
   followUpDate?: Date; // Date de relance
