@@ -16,6 +16,8 @@ import { useState } from "react";
 import { statusEnumToString } from "../api/config";
 
 const SearchBar = (props: {
+  search: string;
+  status: string;
   setJobs: React.Dispatch<React.SetStateAction<Job[]>>;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
   setStatus: React.Dispatch<React.SetStateAction<string>>;
@@ -60,6 +62,8 @@ const SearchBar = (props: {
           <Plus /> Nouvelle candidature
         </Button>
         <JobForm
+          search={props.search}
+          status={props.status}
           setJobs={props.setJobs}
           setAuthFormIsOpen={setAuthFormIsOpen}
         />

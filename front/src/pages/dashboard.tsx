@@ -32,6 +32,8 @@ const Dashboard = () => {
       <div className="max-w-[1200px] w-full mx-3 flex flex-col gap-y-4">
         <InfoCardList jobs={jobs} />
         <SearchBar
+          search={search}
+          status={status}
           setJobs={setJobs}
           setSearch={setSearch}
           setStatus={setStatus}

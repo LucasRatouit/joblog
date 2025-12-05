@@ -15,6 +15,8 @@ import AuthFormPage2 from "./authFormPage/authFormPage2";
 import AuthFormPage3 from "./authFormPage/authFormPage3";
 
 const JobForm = (props: {
+  search: string;
+  status: string;
   setJobs: React.Dispatch<React.SetStateAction<Job[]>>;
   setAuthFormIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
@@ -30,15 +32,17 @@ const JobForm = (props: {
       <form
         className="space-y-4"
         onSubmit={handleSubmit(async (data) => {
-          console.log(data);
+          // console.log(data);
           await createJob(data).then(() => {
-            userJobs().then((res) => {
-              props.setJobs(res);
-              props.setAuthFormIsOpen(false);
-              reset();
-              setNumPageForm(1);
-              toast.success("Poste créé avec succès");
-            });
+            userJobs({ search: props.search, status: props.status }).then(
+              (res) => {
+                props.setJobs(res);
+                props.setAuthFormIsOpen(false);
+                reset();
+                setNumPageForm(1);
+                toast.success("Poste créé avec succès");
+              }
+            );
           });
         })}
       >
