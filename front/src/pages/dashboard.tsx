@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import InfoCardList from "../components/infoCard";
 import SearchBar from "../components/searchBar";
 import { type Job, userJobs } from "../api/services/job";
-import Jobs from "../components/jobs";
+import Jobs from "../components/jobs/jobs";
 import AppSidebar from "../components/app-sidebar";
 import { Button } from "../components/ui/button";
 import { PanelLeftOpen } from "lucide-react";
@@ -38,6 +38,7 @@ const Dashboard = () => {
           setSearch={setSearch}
           setStatus={setStatus}
         />
+        {/* Dans 'Jobs'>'jobActions' voir la feature mis en commentaire */}
         <Jobs jobs={jobs} setJobs={setJobs} />
       </div>
     </div>
