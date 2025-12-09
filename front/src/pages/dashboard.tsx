@@ -31,6 +31,7 @@ const Dashboard = () => {
       </Button>
       <div className="max-w-[1200px] w-full mx-3 flex flex-col gap-y-4">
         <InfoCardList jobs={jobs} />
+        {/* Dans 'InfoCardList' mettre à jour les valeurs indépendamment de celle de 'Jobs' xZUSTANDx */}
         <SearchBar
           search={search}
           status={status}

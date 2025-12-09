@@ -2,6 +2,16 @@ import { SquarePen, ExternalLink, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { deleteJob, type Job } from "../../api/services/job";
 import { Button } from "../ui/button";
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "../ui/alert-dialog";
 
 const JobActions = ({
   job,
@@ -31,18 +41,39 @@ const JobActions = ({
           <ExternalLink />
         </Button>
         {/* Détail de l'offre lié au site d'emploi grâce à un bouton */}
-        <Button
-          variant="destructive"
-          className="w-10 h-10 cursor-pointer"
-          onClick={() => {
-            deleteJob(job.id).then(() => {
-              setJobs(jobs.filter((jobItem) => jobItem.id !== job.id));
-              toast.success("Job supprimé !");
-            });
-          }}
-        >
-          <Trash2 />
-        </Button>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button variant="destructive" className="w-10 h-10 cursor-pointer">
+              <Trash2 />
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Supprimer l'offre</AlertDialogTitle>
+              <AlertDialogDescription>
+                Êtes-vous sûr de vouloir supprimer cette offre ? Cette action
+                est irréversible.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel asChild>
+                <Button variant="outline">Annuler</Button>
+              </AlertDialogCancel>
+              <Button
+                variant="destructive"
+                className="cursor-pointer"
+                onClick={() => {
+                  deleteJob(job.id).then(() => {
+                    setJobs(jobs.filter((jobItem) => jobItem.id !== job.id));
+                    toast.success("Job supprimé !");
+                  });
+                }}
+              >
+                Supprimer
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </>
   );
