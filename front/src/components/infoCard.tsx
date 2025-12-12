@@ -1,7 +1,7 @@
 import { BadgeCheck, Clock, List, TriangleAlert, Users } from "lucide-react";
-import type { Job } from "../api/services/job";
 import type { ReactNode } from "react";
 import { statusGradientColor } from "../api/config";
+import { useJobStore } from "../stores/job";
 
 const InfoCard = (props: {
   name: string;
@@ -33,31 +33,33 @@ const InfoCard = (props: {
   );
 };
 
-const InfoCardList = (props: { jobs: Job[] }) => {
+const InfoCardList = () => {
+  const { jobs } = useJobStore();
+
   return (
     <div className="pb-1 grid gap-x-2 gap-y-4 grid-cols-[repeat(auto-fill,minmax(200px,1fr))]">
-      <InfoCard name="Total" number={props.jobs.length} logo={<List />} />
+      <InfoCard name="Total" number={jobs.length} logo={<List />} />
       <InfoCard
         name="En attente"
-        number={props.jobs.filter((job) => job.status === "PENDING").length}
+        number={jobs.filter((job) => job.status === "PENDING").length}
         logo={<Clock />}
         color="PENDING"
       />
       <InfoCard
         name="Entretiens"
-        number={props.jobs.filter((job) => job.status === "INTERVIEW").length}
+        number={jobs.filter((job) => job.status === "INTERVIEW").length}
         logo={<Users />}
         color="INTERVIEW"
       />
       <InfoCard
         name="À rappeler"
-        number={props.jobs.filter((job) => job.status === "FOLLOW_UP").length}
+        number={jobs.filter((job) => job.status === "FOLLOW_UP").length}
         logo={<TriangleAlert />}
         color="FOLLOW_UP"
       />
       <InfoCard
         name="Acceptées"
-        number={props.jobs.filter((job) => job.status === "ACCEPTED").length}
+        number={jobs.filter((job) => job.status === "ACCEPTED").length}
         logo={<BadgeCheck />}
         color="ACCEPTED"
       />

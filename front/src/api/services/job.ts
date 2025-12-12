@@ -19,13 +19,7 @@ export type Job = {
   followUpDate?: Date;
 };
 
-export const userJobs = async ({
-  search,
-  status,
-}: {
-  search: string;
-  status: string;
-}) => {
+export const userJobs = async (search: string, status: string) => {
   return await axios
     .get(routeUrl, {
       withCredentials: true,

@@ -1,17 +1,16 @@
 import { Building2, MapPin } from "lucide-react";
 import { Card } from "../ui/card";
-import { type Job } from "../../api/services/job";
 import { statusGradientColor } from "../../api/config";
 import JobActions from "./jobActions";
 import JobInfos from "./jobInfos";
+import { useJobStore } from "../../stores/job";
 
-const Jobs = (props: {
-  jobs: Job[];
-  setJobs: React.Dispatch<React.SetStateAction<Job[]>>;
-}) => {
+const Jobs = () => {
+  const { jobsFiltered } = useJobStore();
+
   return (
     <div className="flex flex-col gap-y-1.5">
-      {props.jobs.map((job) => (
+      {jobsFiltered.map((job) => (
         <Card
           key={job.id}
           className="z-10 border-0 pl-6 pr-4 py-4 flex flex-row gap-x-2 relative"
@@ -43,7 +42,7 @@ const Jobs = (props: {
               </p>
             )}
           </div>
-          <JobActions job={job} jobs={props.jobs} setJobs={props.setJobs} />
+          <JobActions job={job} />
         </Card>
       ))}
     </div>

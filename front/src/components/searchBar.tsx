@@ -11,30 +11,23 @@ import {
 } from "./ui/select";
 import { Dialog } from "./ui/dialog";
 import JobForm from "./jobForm";
-import type { Job } from "../api/services/job";
 import { useState } from "react";
 import { statusEnumToString } from "../api/config";
+import { useJobStore } from "../stores/job";
 
-const SearchBar = (props: {
-  search: string;
-  status: string;
-  setJobs: React.Dispatch<React.SetStateAction<Job[]>>;
-  setSearch: React.Dispatch<React.SetStateAction<string>>;
-  setStatus: React.Dispatch<React.SetStateAction<string>>;
-}) => {
+const SearchBar = () => {
   const [AuthFormIsOpen, setAuthFormIsOpen] = useState(false);
+
+  const { updateSearch, updateStatus } = useJobStore();
 
   return (
     <Card className="border-0 px-2 py-2 flex flex-row gap-2">
       <Input
         className="w-full"
         placeholder="Rechercher par entreprise ou poste"
-        onChange={(e) => props.setSearch(e.target.value)}
+        onChange={(e) => updateSearch(e.target.value)}
       />
-      <Select
-        defaultValue="*"
-        onValueChange={(value) => props.setStatus(value)}
-      >
+      <Select defaultValue="*" onValueChange={(value) => updateStatus(value)}>
         <SelectTrigger className="w-2/6">
           <SelectValue placeholder="Sélectionner un statut" />
         </SelectTrigger>
@@ -61,12 +54,7 @@ const SearchBar = (props: {
         >
           <Plus /> Nouvelle candidature
         </Button>
-        <JobForm
-          search={props.search}
-          status={props.status}
-          setJobs={props.setJobs}
-          setAuthFormIsOpen={setAuthFormIsOpen}
-        />
+        <JobForm setAuthFormIsOpen={setAuthFormIsOpen} />
       </Dialog>
     </Card>
   );

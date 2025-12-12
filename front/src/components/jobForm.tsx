@@ -7,17 +7,16 @@ import {
   DialogTitle,
 } from "./ui/dialog";
 import { Button } from "./ui/button";
-import { createJob, userJobs, type Job } from "../api/services/job";
 import { toast } from "sonner";
 import { useState } from "react";
 import AuthFormPage1 from "./authFormPage/authFormPage1";
 import AuthFormPage2 from "./authFormPage/authFormPage2";
 import AuthFormPage3 from "./authFormPage/authFormPage3";
+import { useJobStore } from "../stores/job";
 
-const JobForm = (props: {
-  search: string;
-  status: string;
-  setJobs: React.Dispatch<React.SetStateAction<Job[]>>;
+const JobForm = ({
+  setAuthFormIsOpen,
+}: {
   setAuthFormIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const { register, handleSubmit, reset, control } = useForm<FieldValues>();
@@ -27,6 +26,8 @@ const JobForm = (props: {
     company: string;
   }>({ title: "", company: "" });
 
+  const { createJob } = useJobStore();
+
   return (
     <DialogContent>
       <form
@@ -34,15 +35,10 @@ const JobForm = (props: {
         onSubmit={handleSubmit(async (data) => {
           // console.log(data);
           await createJob(data).then(() => {
-            userJobs({ search: props.search, status: props.status }).then(
-              (res) => {
-                props.setJobs(res);
-                props.setAuthFormIsOpen(false);
-                reset();
-                setNumPageForm(1);
-                toast.success("Poste créé avec succès");
-              }
-            );
+            setAuthFormIsOpen(false);
+            reset();
+            setNumPageForm(1);
+            toast.success("Poste créé avec succès");
           });
         })}
       >

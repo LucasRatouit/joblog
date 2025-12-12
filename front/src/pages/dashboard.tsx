@@ -1,23 +1,25 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import InfoCardList from "../components/infoCard";
 import SearchBar from "../components/searchBar";
-import { type Job, userJobs } from "../api/services/job";
 import Jobs from "../components/jobs/jobs";
 import AppSidebar from "../components/app-sidebar";
 import { Button } from "../components/ui/button";
 import { PanelLeftOpen } from "lucide-react";
 import { useSidebar } from "../components/ui/sidebar";
+import { useJobStore } from "../stores/job";
 
 const Dashboard = () => {
-  const [jobs, setJobs] = useState<Job[]>([]);
-  const [search, setSearch] = useState<string>("");
-  const [status, setStatus] = useState<string>("*");
   const { toggleSidebar } = useSidebar();
 
+  const { getJobs, search, status, getJobsFiltered } = useJobStore();
+  // Améliorer createJob sur jobStore, pour mettre à jour 'jobs' et 'jobsFiltered' sans requêter à nouveau tout les jobs
+
   useEffect(() => {
-    userJobs({ search, status }).then((res) => {
-      setJobs(res);
-    });
+    getJobs();
+  }, []);
+
+  useEffect(() => {
+    getJobsFiltered(search, status);
   }, [search, status]);
 
   return (
@@ -30,17 +32,11 @@ const Dashboard = () => {
         <PanelLeftOpen />
       </Button>
       <div className="max-w-[1200px] w-full mx-3 flex flex-col gap-y-4">
-        <InfoCardList jobs={jobs} />
-        {/* Dans 'InfoCardList' mettre à jour les valeurs indépendamment de celle de 'Jobs' xZUSTANDx */}
-        <SearchBar
-          search={search}
-          status={status}
-          setJobs={setJobs}
-          setSearch={setSearch}
-          setStatus={setStatus}
-        />
+        <InfoCardList />
+        <SearchBar />
         {/* Dans 'Jobs'>'jobActions' voir la feature mis en commentaire */}
-        <Jobs jobs={jobs} setJobs={setJobs} />
+        <Jobs />
+        {/* Ajouter une information quand aucun job est trouvé */}
       </div>
     </div>
   );
