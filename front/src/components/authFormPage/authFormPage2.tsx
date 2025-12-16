@@ -76,11 +76,7 @@ const AuthFormPage2 = ({
       </div>
       <div className="space-y-1"></div>
       <div className="space-y-1">
-        <Input
-          {...register("description")}
-          type="text"
-          placeholder="Description"
-        />
+        <Input {...register("comment")} type="text" placeholder="Commentaire" />
       </div>
       <div className="space-y-1">
         <Input

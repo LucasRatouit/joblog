@@ -36,9 +36,9 @@ const Jobs = () => {
               )}
             </div>
             <JobInfos job={job} />
-            {job.description && (
+            {job.comment && (
               <p className="bg-zinc-100 dark:bg-zinc-700 text-gray-500 dark:text-gray-300 p-3 rounded-lg">
-                {job.description}
+                {job.comment}
               </p>
             )}
           </div>

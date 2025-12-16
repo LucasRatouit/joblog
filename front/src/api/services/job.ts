@@ -10,9 +10,10 @@ export type Job = {
   company: string;
   status: string;
   location?: string;
-  description?: string;
+  comment?: string;
   email?: string;
   phone?: string;
+  description?: string;
   redirectUrl?: string;
   candidacyDate?: Date;
   interviewDate?: Date;

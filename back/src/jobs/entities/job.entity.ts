@@ -4,9 +4,10 @@ export class Job {
   company: string;
   status: JobStatus;
   location?: string;
-  description?: string;
+  comment?: string;
   email?: string;
   phone?: string;
+  description?: string;
   redirectUrl?: string;
   candidacyDate?: Date; // Date de candidature
   interviewDate?: Date; // Date d'entretien

@@ -21,10 +21,11 @@ model Job {
   company       String
   status        JobStatus @default(PENDING)
   location      String?
-  description   String?
+  comment       String?
   email         String?
   phone         String?
   redirectUrl   String?
+  description   String?
   candidacyDate DateTime? // Date de candidature
   interviewDate DateTime? // Date d'entretien
   followUpDate  DateTime? // Date de relance

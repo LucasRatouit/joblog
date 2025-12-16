@@ -34,7 +34,7 @@ const Dashboard = () => {
       <div className="max-w-[1200px] w-full mx-3 flex flex-col gap-y-4">
         <InfoCardList />
         <SearchBar />
-        {/* Dans 'Jobs'>'jobActions' voir la feature mis en commentaire */}
+        {/* Dans 'Jobs'>'jobActions', refacto le fichier */}
         <Jobs />
         {/* Ajouter une information quand aucun job est trouvé */}
       </div>
