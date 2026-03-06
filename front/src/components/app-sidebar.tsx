@@ -1,6 +1,5 @@
 import {
   LogOut,
-  PanelLeftClose,
   SunMoon,
   LayoutDashboard,
   Briefcase,
@@ -24,6 +23,7 @@ import {
 } from "./ui/sidebar";
 import { useTheme } from "./theme-provider";
 import { Separator } from "./ui/separator";
+import { Link, useLocation } from "react-router";
 
 /**
  * Main sidebar component for the application.
@@ -34,6 +34,7 @@ import { Separator } from "./ui/separator";
 const AppSidebar = (): JSX.Element => {
   const { theme, setTheme } = useTheme();
   const { toggleSidebar } = useSidebar();
+  const location = useLocation();
 
   const handleLogout = async (): Promise<void> => {
     try {
@@ -45,7 +46,7 @@ const AppSidebar = (): JSX.Element => {
   };
 
   const navItems = [
-    { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard", active: true },
+    { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
     { icon: Briefcase, label: "Candidatures", href: "/applications" },
     { icon: PieChart, label: "Statistiques", href: "/stats" },
   ];
@@ -75,24 +76,27 @@ const AppSidebar = (): JSX.Element => {
           </div>
 
           <SidebarMenu>
-            {navItems.map((item) => (
-              <SidebarMenuItem key={item.label} className="mb-1">
-                <SidebarMenuButton
-                  asChild
-                  isActive={item.active}
-                  className={`h-11 px-4 rounded-xl transition-all duration-300 ${
-                    item.active 
-                      ? "bg-primary/10 text-primary font-bold shadow-sm" 
-                      : "hover:bg-muted font-medium text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  <a href={item.href} className="flex items-center gap-x-3">
-                    <item.icon className={`size-5 ${item.active ? "text-primary" : "opacity-70"}`} />
-                    <span className="text-sm">{item.label}</span>
-                  </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
+            {navItems.map((item) => {
+              const isActive = location.pathname === item.href;
+              return (
+                <SidebarMenuItem key={item.label} className="mb-1">
+                  <SidebarMenuButton
+                    asChild
+                    isActive={isActive}
+                    className={`h-11 px-4 rounded-xl transition-all duration-300 ${
+                      isActive 
+                        ? "bg-primary/10 text-primary font-bold shadow-sm" 
+                        : "hover:bg-muted font-medium text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    <Link to={item.href} className="flex items-center gap-x-3">
+                      <item.icon className={`size-5 ${isActive ? "text-primary" : "opacity-70"}`} />
+                      <span className="text-sm">{item.label}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              );
+            })}
           </SidebarMenu>
         </SidebarGroup>
 
