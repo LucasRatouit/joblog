@@ -1,4 +1,14 @@
-import { LogOut, PanelLeftClose, SunMoon } from "lucide-react";
+import {
+  LogOut,
+  PanelLeftClose,
+  SunMoon,
+  LayoutDashboard,
+  Briefcase,
+  PieChart,
+  Settings,
+  PlusCircle,
+  User,
+} from "lucide-react";
 import { userLogout } from "../api/services/user";
 import { Button } from "./ui/button";
 import {
@@ -7,64 +17,128 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarHeader,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
   useSidebar,
 } from "./ui/sidebar";
 import { useTheme } from "./theme-provider";
+import { Separator } from "./ui/separator";
 
-const AppSidebar = () => {
+/**
+ * Main sidebar component for the application.
+ * Provides navigation, theme switching, and user account actions.
+ *
+ * @returns {JSX.Element} The rendered sidebar component
+ */
+const AppSidebar = (): JSX.Element => {
   const { theme, setTheme } = useTheme();
   const { toggleSidebar } = useSidebar();
 
+  const handleLogout = async (): Promise<void> => {
+    try {
+      await userLogout();
+      window.location.href = "/";
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
+
+  const navItems = [
+    { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard", active: true },
+    { icon: Briefcase, label: "Candidatures", href: "/applications" },
+    { icon: PieChart, label: "Statistiques", href: "/stats" },
+  ];
+
   return (
-    <Sidebar variant="floating">
-      <SidebarHeader>
+    <Sidebar variant="floating" className="border-r-0 shadow-2xl">
+      <SidebarHeader className="p-4">
         <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold ml-2">
-            Job<span className="text-primary">log</span>
-          </h1>
-          <Button
-            variant="ghost"
-            className="cursor-pointer"
-            onClick={toggleSidebar}
-          >
-            <PanelLeftClose className="size-5" />
-          </Button>
+          <div className="flex items-center gap-x-2 px-2">
+            <div className="size-8 bg-primary rounded-lg flex items-center justify-center shadow-lg shadow-primary/20 rotate-3 transition-transform hover:rotate-0">
+              <Briefcase className="size-5 text-white" />
+            </div>
+            <h1 className="text-xl font-black tracking-tighter">
+              Job<span className="text-primary">log</span>
+            </h1>
+          </div>
         </div>
       </SidebarHeader>
-      <SidebarContent>
-        {/* <SidebarGroup>
-          <Card className="z-10 px-2 py-1 border-0 relative">
-            <div
-              className={`-z-10 w-full h-full bg-gradient-to-t ${statusGradientColor("pending")} rounded-lg absolute top-0 left-0`}
-            />
-            <div
-              className={`z-10 w-full h-full bg-card rounded-lg absolute top-0 left-1`}
-            />
-            <p className="z-10 ml-2 space-x-2">
-              <span className="font-bold text-lg">1</span>
-              <span className="text-gray-400 font-medium text-sm">Test</span>
-            </p>
-          </Card>
-        </SidebarGroup> */}
-        <SidebarGroup />
+
+      <SidebarContent className="px-3">
+        <SidebarGroup>
+          <div className="px-3 mb-4">
+            <Button className="w-full justify-start gap-x-2 h-11 rounded-xl shadow-lg shadow-primary/15 hover:shadow-primary/25 transition-all">
+              <PlusCircle className="size-4" />
+              <span className="font-bold text-xs uppercase tracking-widest">Nouveau Job</span>
+            </Button>
+          </div>
+
+          <SidebarMenu>
+            {navItems.map((item) => (
+              <SidebarMenuItem key={item.label} className="mb-1">
+                <SidebarMenuButton
+                  asChild
+                  isActive={item.active}
+                  className={`h-11 px-4 rounded-xl transition-all duration-300 ${
+                    item.active 
+                      ? "bg-primary/10 text-primary font-bold shadow-sm" 
+                      : "hover:bg-muted font-medium text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  <a href={item.href} className="flex items-center gap-x-3">
+                    <item.icon className={`size-5 ${item.active ? "text-primary" : "opacity-70"}`} />
+                    <span className="text-sm">{item.label}</span>
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            ))}
+          </SidebarMenu>
+        </SidebarGroup>
+
+        <Separator className="mx-4 my-4 opacity-30" />
+
+        <SidebarGroup>
+          <p className="px-5 mb-3 text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60">
+            Préférences
+          </p>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+                className="h-11 px-4 rounded-xl hover:bg-muted text-muted-foreground hover:text-foreground transition-all"
+              >
+                <SunMoon className="size-5 opacity-70" />
+                <span className="text-sm">Thème {theme === "light" ? "sombre" : "clair"}</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton className="h-11 px-4 rounded-xl hover:bg-muted text-muted-foreground hover:text-foreground transition-all">
+                <Settings className="size-5 opacity-70" />
+                <span className="text-sm">Paramètres</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter>
-        <Button
-          variant="outline"
-          className="cursor-pointer"
-          onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-        >
-          <SunMoon size={16} />
-          Changer de thème
-        </Button>
+
+      <SidebarFooter className="p-4 border-t border-border/30 bg-muted/20">
+        <div className="flex items-center gap-x-3 px-2 mb-4">
+          <div className="size-10 rounded-xl bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center text-white shadow-lg ring-2 ring-background">
+            <User className="size-6" />
+          </div>
+          <div className="flex flex-col overflow-hidden">
+            <span className="text-sm font-black truncate leading-none mb-1">Candidat</span>
+            <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest opacity-60">Pro plan</span>
+          </div>
+        </div>
+        
         <Button
           variant="destructive"
-          className="cursor-pointer"
-          onClick={async () =>
-            await userLogout().then(() => (window.location.href = "/"))
-          }
+          className="w-full h-11 rounded-xl font-black text-xs uppercase tracking-widest shadow-xl shadow-destructive/10 hover:shadow-destructive/20 transition-all gap-x-2"
+          onClick={handleLogout}
         >
-          <LogOut size={16} />
+          <LogOut size={14} />
           Déconnexion
         </Button>
       </SidebarFooter>

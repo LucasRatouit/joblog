@@ -24,6 +24,8 @@ Imports : Utiliser des imports nommés plutôt que des imports par défaut quand
 Grouper les imports : bibliothèques externes d'abord, puis modules internes.
 Commentaires : Commenter le pourquoi, pas le quoi. Le code doit être auto-documenté.
 Ajouter un commentaire JSDoc sur toutes les fonctions exportées.
+Prendre en considération les deux thèmes (light/dark)
+Pour le côté back-end, ne change pas les fichiers, propose moi seulement des ajouts ou modifications
 
 ✅ Standards de qualité
 Quand tu génères du code, tu dois systématiquement :
