@@ -24,6 +24,9 @@ import {
 import { useTheme } from "./theme-provider";
 import { Separator } from "./ui/separator";
 import { Link, useLocation } from "react-router";
+import { Dialog } from "./ui/dialog";
+import JobForm from "./jobForm";
+import { useState } from "react";
 
 /**
  * Main sidebar component for the application.
@@ -35,6 +38,7 @@ const AppSidebar = (): JSX.Element => {
   const { theme, setTheme } = useTheme();
   const { toggleSidebar } = useSidebar();
   const location = useLocation();
+  const [jobFormIsOpen, setJobFormIsOpen] = useState<boolean>(false);
 
   const handleLogout = async (): Promise<void> => {
     try {
@@ -69,10 +73,16 @@ const AppSidebar = (): JSX.Element => {
       <SidebarContent className="px-3">
         <SidebarGroup>
           <div className="px-3 mb-4">
-            <Button className="w-full justify-start gap-x-2 h-11 rounded-xl shadow-lg shadow-primary/15 hover:shadow-primary/25 transition-all">
-              <PlusCircle className="size-4" />
-              <span className="font-bold text-xs uppercase tracking-widest">Nouveau Job</span>
-            </Button>
+            <Dialog open={jobFormIsOpen} onOpenChange={setJobFormIsOpen}>
+              <Button 
+                className="w-full justify-start gap-x-2 h-11 rounded-xl shadow-lg shadow-primary/15 hover:shadow-primary/25 transition-all"
+                onClick={() => setJobFormIsOpen(true)}
+              >
+                <PlusCircle className="size-4" />
+                <span className="font-bold text-xs uppercase tracking-widest">Nouveau Job</span>
+              </Button>
+              <JobForm setAuthFormIsOpen={setJobFormIsOpen} />
+            </Dialog>
           </div>
 
           <SidebarMenu>
