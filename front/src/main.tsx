@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider } from "react-router";
 import { ThemeProvider } from "./components/theme-provider.tsx";
 import Dashboard from "./pages/dashboard.tsx";
 import Applications from "./pages/applications.tsx";
+import Stats from "./pages/stats.tsx";
 import { Toaster } from "./components/ui/sonner.tsx";
 import { SidebarProvider } from "./components/ui/sidebar.tsx";
 
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
   {
     path: "/applications",
     element: <Applications />,
+  },
+  {
+    path: "/stats",
+    element: <Stats />,
   },
   {
     path: "*",
