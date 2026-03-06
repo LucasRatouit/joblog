@@ -4,8 +4,7 @@ import { SidebarInset, SidebarProvider, SidebarTrigger } from "../components/ui/
 import { useJobStore } from "../stores/job";
 import { statusEnumToString, statusGradientColor } from "../api/config";
 import { cn } from "../lib/utils";
-import { Building2, MapPin, Plus } from "lucide-react";
-import { Button } from "../components/ui/button";
+import { Building2, MapPin } from "lucide-react";
 import JobActions from "../components/jobs/jobActions";
 
 const statuses = ["PENDING", "INTERVIEW", "FOLLOW_UP", "ACCEPTED"];
@@ -59,58 +58,56 @@ const Applications = () => {
 
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen w-full bg-background transition-colors duration-300">
-        <AppSidebar />
-        <SidebarInset className="flex flex-col bg-background">
-          <header className="flex h-16 shrink-0 items-center gap-2 px-4 sticky top-0 z-30 bg-background/50 backdrop-blur-xl border-b border-border/5 transition-all">
-            <div className="flex items-center gap-2">
-              <SidebarTrigger className="size-9 rounded-xl hover:bg-primary/10 hover:text-primary transition-all border border-border/40 shadow-sm" />
-              <div className="h-4 w-px bg-border/40 mx-2" />
-              <h2 className="text-sm font-black uppercase tracking-widest opacity-40">
-                Candidatures (Kanban)
-              </h2>
-            </div>
-          </header>
+      <AppSidebar />
+      <SidebarInset className="flex flex-col bg-background overflow-hidden h-svh">
+        <header className="flex h-16 shrink-0 items-center gap-2 px-4 sticky top-0 z-30 bg-background/50 backdrop-blur-xl border-b border-border/5">
+          <div className="flex items-center gap-2">
+            <SidebarTrigger className="size-9 rounded-xl hover:bg-primary/10 hover:text-primary transition-all border border-border/40 shadow-sm" />
+            <div className="h-4 w-px bg-border/40 mx-2" />
+            <h2 className="text-sm font-black uppercase tracking-widest opacity-40">
+              Candidatures (Kanban)
+            </h2>
+          </div>
+        </header>
 
-          <main className="flex-1 overflow-x-auto p-4 md:p-8">
-            <div className="flex gap-6 min-h-[calc(100vh-10rem)] min-w-max pb-4">
-              {statuses.map((status) => {
-                const filteredJobs = jobs.filter((job) => job.status === status);
-                return (
-                  <div key={status} className="w-80 flex flex-col gap-y-4">
-                    <div className="flex items-center justify-between px-2">
-                      <div className="flex items-center gap-x-3">
-                        <div className={cn(
-                          "size-2.5 rounded-full shadow-[0_0_8px_rgba(0,0,0,0.1)]",
-                          statusGradientColor(status)
-                        )} />
-                        <h3 className="font-black text-xs uppercase tracking-[0.2em] opacity-60">
-                          {statusEnumToString(status)}
-                        </h3>
-                        <span className="bg-muted px-2 py-0.5 rounded-full text-[10px] font-black opacity-40">
-                          {filteredJobs.length}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="flex-1 bg-muted/20 rounded-[2rem] p-3 border border-border/5 space-y-3 overflow-y-auto max-h-[calc(100vh-14rem)] custom-scrollbar">
-                      {filteredJobs.map((job) => (
-                        <KanbanCard key={job.id} job={job} />
-                      ))}
-                      
-                      {filteredJobs.length === 0 && (
-                        <div className="h-24 border-2 border-dashed border-border/20 rounded-2xl flex items-center justify-center">
-                          <p className="text-[10px] font-black uppercase tracking-widest opacity-20">Aucun job</p>
-                        </div>
-                      )}
+        <div className="flex-1 overflow-x-auto custom-scrollbar p-4 md:p-8">
+          <div className="flex gap-6 h-full w-max pr-8">
+            {statuses.map((status) => {
+              const filteredJobs = jobs.filter((job) => job.status === status);
+              return (
+                <div key={status} className="w-80 flex flex-col gap-y-4">
+                  <div className="flex items-center justify-between px-2">
+                    <div className="flex items-center gap-x-3">
+                      <div className={cn(
+                        "size-2.5 rounded-full shadow-[0_0_8px_rgba(0,0,0,0.1)]",
+                        statusGradientColor(status)
+                      )} />
+                      <h3 className="font-black text-xs uppercase tracking-[0.2em] opacity-60 text-nowrap">
+                        {statusEnumToString(status)}
+                      </h3>
+                      <span className="bg-muted px-2 py-0.5 rounded-full text-[10px] font-black opacity-40">
+                        {filteredJobs.length}
+                      </span>
                     </div>
                   </div>
-                );
-              })}
-            </div>
-          </main>
-        </SidebarInset>
-      </div>
+
+                  <div className="flex-1 bg-muted/20 rounded-[2rem] p-3 border border-border/5 space-y-3 overflow-y-auto custom-scrollbar">
+                    {filteredJobs.map((job) => (
+                      <KanbanCard key={job.id} job={job} />
+                    ))}
+                    
+                    {filteredJobs.length === 0 && (
+                      <div className="h-24 border-2 border-dashed border-border/20 rounded-2xl flex items-center justify-center">
+                        <p className="text-[10px] font-black uppercase tracking-widest opacity-20">Aucun job</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </SidebarInset>
     </SidebarProvider>
   );
 };
