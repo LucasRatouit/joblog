@@ -23,6 +23,7 @@ interface JobState {
 
   createJob: (job: FieldValues) => Promise<void>;
   updateJob: (id: string, job: Partial<Job>) => Promise<void>;
+  updateJobLocally: (id: string, jobData: Partial<Job>) => void;
   deleteJob: (id: string) => Promise<void>;
 }
 
@@ -62,6 +63,14 @@ export const useJobStore = create<JobState>((set) => ({
       }));
       toast.success("Job mis à jour !");
     });
+  },
+  updateJobLocally: (id, jobData) => {
+    set((state) => ({
+      jobs: state.jobs.map((j) => (j.id === id ? { ...j, ...jobData } : j)),
+      jobsFiltered: state.jobsFiltered.map((j) =>
+        j.id === id ? { ...j, ...jobData } : j
+      ),
+    }));
   },
   deleteJob: (id: string) =>
     apiDeleteJob(id).then(() => {

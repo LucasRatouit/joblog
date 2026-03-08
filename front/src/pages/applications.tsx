@@ -13,13 +13,15 @@ import JobActions from "../components/jobs/jobActions";
 import {
   DndContext,
   DragOverlay,
-  closestCorners,
   KeyboardSensor,
   PointerSensor,
   useSensor,
   useSensors,
   type DragStartEvent,
   type DragEndEvent,
+  type DragOverEvent,
+  useDroppable,
+  pointerWithin,
 } from "@dnd-kit/core";
 import {
   SortableContext,
@@ -129,8 +131,64 @@ const KanbanCard = ({
   );
 };
 
+const KanbanColumn = ({ 
+  status, 
+  jobs 
+}: { 
+  status: string; 
+  jobs: Job[] 
+}) => {
+  const { setNodeRef } = useDroppable({
+    id: status,
+  });
+
+  return (
+    <div className="w-80 flex flex-col gap-y-4">
+      <div className="flex items-center justify-between px-2">
+        <div className="flex items-center gap-x-3">
+          <div
+            className={cn(
+              "size-2.5 rounded-full shadow-[0_0_8px_rgba(0,0,0,0.1)]",
+              statusGradientColor(status),
+            )}
+          />
+          <h3 className="font-black text-xs uppercase tracking-[0.2em] opacity-60 text-nowrap">
+            {statusEnumToString(status)}
+          </h3>
+          <span className="bg-muted px-2 py-0.5 rounded-full text-[10px] font-black opacity-40">
+            {jobs.length}
+          </span>
+        </div>
+      </div>
+
+      <SortableContext
+        id={status}
+        items={jobs.map((j) => j.id)}
+        strategy={verticalListSortingStrategy}
+      >
+        <div
+          ref={setNodeRef}
+          className="flex-1 bg-muted/20 rounded-[2rem] p-3 border border-border/5 space-y-3 overflow-y-auto custom-scrollbar min-h-[200px] transition-colors duration-200"
+        >
+          {jobs.map((job) => (
+            <KanbanCard key={job.id} job={job} />
+          ))}
+
+          {jobs.length === 0 && (
+            <div className="h-24 border-2 border-dashed border-border/20 rounded-2xl flex items-center justify-center pointer-events-none">
+              <p className="text-[10px] font-black uppercase tracking-widest opacity-20">
+                Aucun job
+              </p>
+            </div>
+          )}
+        </div>
+      </SortableContext>
+    </div>
+  );
+};
+
 const Applications = () => {
-  const { jobs, getJobs, updateJob } = useJobStore();
+  const { jobs, getJobs, updateJob, updateJobLocally } = useJobStore();
   const [activeJob, setActiveJob] = useState<Job | null>(null);
 
   useEffect(() => {
@@ -154,6 +212,32 @@ const Applications = () => {
     if (job) setActiveJob(job);
   };
 
+  const handleDragOver = (event: DragOverEvent) => {
+    const { active, over } = event;
+    if (!over) return;
+
+    const activeId = active.id as string;
+    const overId = over.id as string;
+
+    if (activeId === overId) return;
+
+    const job = jobs.find((j) => j.id === activeId);
+    if (!job) return;
+
+    // Check if over a column or another job
+    let newStatus = overId;
+    if (!statuses.includes(overId)) {
+      const overJob = jobs.find((j) => j.id === overId);
+      if (overJob) {
+        newStatus = overJob.status;
+      }
+    }
+
+    if (statuses.includes(newStatus) && job.status !== newStatus) {
+      updateJobLocally(activeId, { status: newStatus });
+    }
+  };
+
   const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
     setActiveJob(null);
@@ -175,7 +259,7 @@ const Applications = () => {
       newStatus = overJob.status;
     }
 
-    if (statuses.includes(newStatus) && activeJob.status !== newStatus) {
+    if (statuses.includes(newStatus)) {
       await updateJob(activeId, { status: newStatus });
     }
   };
@@ -196,60 +280,20 @@ const Applications = () => {
 
         <DndContext
           sensors={sensors}
-          collisionDetection={closestCorners}
+          collisionDetection={pointerWithin}
           onDragStart={handleDragStart}
+          onDragOver={handleDragOver}
           onDragEnd={handleDragEnd}
         >
           <div className="flex-1 overflow-x-auto custom-scrollbar p-4 md:p-8">
             <div className="flex gap-6 h-full w-max pr-8">
-              {statuses.map((status) => {
-                const filteredJobs = jobs.filter(
-                  (job) => job.status === status,
-                );
-                return (
-                  <div key={status} className="w-80 flex flex-col gap-y-4">
-                    <div className="flex items-center justify-between px-2">
-                      <div className="flex items-center gap-x-3">
-                        <div
-                          className={cn(
-                            "size-2.5 rounded-full shadow-[0_0_8px_rgba(0,0,0,0.1)]",
-                            statusGradientColor(status),
-                          )}
-                        />
-                        <h3 className="font-black text-xs uppercase tracking-[0.2em] opacity-60 text-nowrap">
-                          {statusEnumToString(status)}
-                        </h3>
-                        <span className="bg-muted px-2 py-0.5 rounded-full text-[10px] font-black opacity-40">
-                          {filteredJobs.length}
-                        </span>
-                      </div>
-                    </div>
-
-                    <SortableContext
-                      id={status}
-                      items={filteredJobs.map((j) => j.id)}
-                      strategy={verticalListSortingStrategy}
-                    >
-                      <div
-                        id={status}
-                        className="flex-1 bg-muted/20 rounded-[2rem] p-3 border border-border/5 space-y-3 overflow-y-auto custom-scrollbar min-h-[200px]"
-                      >
-                        {filteredJobs.map((job) => (
-                          <KanbanCard key={job.id} job={job} />
-                        ))}
-
-                        {filteredJobs.length === 0 && (
-                          <div className="h-24 border-2 border-dashed border-border/20 rounded-2xl flex items-center justify-center">
-                            <p className="text-[10px] font-black uppercase tracking-widest opacity-20">
-                              Aucun job
-                            </p>
-                          </div>
-                        )}
-                      </div>
-                    </SortableContext>
-                  </div>
-                );
-              })}
+              {statuses.map((status) => (
+                <KanbanColumn 
+                  key={status} 
+                  status={status} 
+                  jobs={jobs.filter((j) => j.status === status)} 
+                />
+              ))}
             </div>
           </div>
           <DragOverlay>
