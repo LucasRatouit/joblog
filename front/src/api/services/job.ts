@@ -41,3 +41,9 @@ export const deleteJob = async (id: string) => {
     .delete(`${routeUrl}/${id}`, { withCredentials: true })
     .catch(() => (window.location.href = "/"));
 };
+
+export const updateJob = async (id: string, job: Partial<Job>) => {
+  await axios
+    .patch(`${routeUrl}/${id}`, job, { withCredentials: true })
+    .catch(() => (window.location.href = "/"));
+};

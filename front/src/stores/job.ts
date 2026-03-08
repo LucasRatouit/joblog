@@ -2,6 +2,7 @@ import { create } from "zustand";
 import {
   createJob as apiCreateJob,
   deleteJob as apiDeleteJob,
+  updateJob as apiUpdateJob,
   userJobs,
   type Job,
 } from "../api/services/job";
@@ -21,6 +22,7 @@ interface JobState {
   getJobsFiltered: (search: string, status: string) => Promise<void>;
 
   createJob: (job: FieldValues) => Promise<void>;
+  updateJob: (id: string, job: Partial<Job>) => Promise<void>;
   deleteJob: (id: string) => Promise<void>;
 }
 
@@ -48,6 +50,17 @@ export const useJobStore = create<JobState>((set) => ({
           useJobStore.getState().status
         );
       toast.success("Poste créé avec succès");
+    });
+  },
+  updateJob: async (id, jobData) => {
+    apiUpdateJob(id, jobData).then(() => {
+      set((state) => ({
+        jobs: state.jobs.map((j) => (j.id === id ? { ...j, ...jobData } : j)),
+        jobsFiltered: state.jobsFiltered.map((j) =>
+          j.id === id ? { ...j, ...jobData } : j
+        ),
+      }));
+      toast.success("Job mis à jour !");
     });
   },
   deleteJob: (id: string) =>
