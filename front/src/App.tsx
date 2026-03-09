@@ -15,7 +15,6 @@ import { Dialog, DialogTrigger } from "./components/ui/dialog";
 import AuthForm from "./components/authForm";
 import { useEffect, useState } from "react";
 import { isLoggedIn } from "./api/services/user";
-import { Toaster } from "./components/ui/sonner";
 
 // Internal Preview Component for visual impact
 const DashboardPreview = () => (
@@ -122,8 +121,6 @@ function App() {
 
   return (
     <div className="bg-background min-h-screen w-full flex flex-col relative overflow-x-hidden selection:bg-primary/30 selection:text-primary scroll-smooth font-sans">
-      <Toaster position="top-center" richColors />
-
       {/* High-end Grain Texture Overlay */}
       <div className="fixed inset-0 pointer-events-none z-[100] opacity-[0.03] mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20" />
 
