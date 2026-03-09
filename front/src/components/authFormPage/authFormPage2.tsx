@@ -52,7 +52,7 @@ const AuthFormPage2 = ({
             defaultValue="PENDING"
             rules={{ required: true }}
             render={({ field }) => (
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select onValueChange={field.onChange} value={field.value}>
                 <SelectTrigger id="status" className="h-12 bg-muted/30 border-border/40 rounded-xl font-bold">
                   <SelectValue placeholder="Statut" />
                 </SelectTrigger>

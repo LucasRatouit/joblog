@@ -21,6 +21,8 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import { useState } from "react";
+import JobForm from "../jobForm";
 
 /**
  * Action buttons for a job application card.
@@ -32,20 +34,21 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
  */
 const JobActions = ({ job }: { job: Job }): JSX.Element => {
   const { deleteJob } = useJobStore();
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
   const actionButtons = [
     {
       icon: SquarePen,
       label: "Modifier",
-      disabled: true,
-      onClick: () => {},
+      disabled: false,
+      isEditDialog: true,
       variant: "ghost" as const,
     },
     {
       icon: Info,
       label: "Détails",
       disabled: !job.description,
-      isDialog: true,
+      isInfoDialog: true,
       variant: "ghost" as const,
     },
     {
@@ -61,7 +64,7 @@ const JobActions = ({ job }: { job: Job }): JSX.Element => {
     <div className="flex flex-row md:flex-col gap-2 items-center justify-center">
       {actionButtons.map((btn, i) => (
         <Tooltip key={i}>
-          {btn.isDialog ? (
+          {btn.isInfoDialog ? (
             <Dialog>
               <TooltipTrigger asChild>
                 <DialogTrigger asChild>
@@ -90,6 +93,22 @@ const JobActions = ({ job }: { job: Job }): JSX.Element => {
                   </div>
                 </div>
               </DialogContent>
+            </Dialog>
+          ) : btn.isEditDialog ? (
+            <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+              <TooltipTrigger asChild>
+                <DialogTrigger asChild>
+                  <Button
+                    disabled={btn.disabled}
+                    variant={btn.variant}
+                    size="icon"
+                    className="size-10 rounded-xl hover:bg-primary/10 hover:text-primary transition-all shadow-sm border border-transparent hover:border-primary/20"
+                  >
+                    <btn.icon className="size-5" />
+                  </Button>
+                </DialogTrigger>
+              </TooltipTrigger>
+              <JobForm setAuthFormIsOpen={setIsEditDialogOpen} job={job} />
             </Dialog>
           ) : (
             <>

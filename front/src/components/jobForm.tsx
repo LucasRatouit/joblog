@@ -8,16 +8,18 @@ import {
 } from "./ui/dialog";
 import { Button } from "./ui/button";
 import { toast } from "sonner";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AuthFormPage1 from "./authFormPage/authFormPage1";
 import AuthFormPage2 from "./authFormPage/authFormPage2";
 import AuthFormPage3 from "./authFormPage/authFormPage3";
 import { useJobStore } from "../stores/job";
 import { Loader2, ArrowRight, ArrowLeft, CheckCircle2 } from "lucide-react";
 import { cn } from "../lib/utils";
+import type { Job } from "../api/services/job";
 
 interface JobFormProps {
   setAuthFormIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  job?: Job;
 }
 
 /**
@@ -26,30 +28,61 @@ interface JobFormProps {
  * @param {JobFormProps} props - Component properties
  * @returns {JSX.Element} The rendered job form dialog content
  */
-const JobForm = ({ setAuthFormIsOpen }: JobFormProps): JSX.Element => {
-  const { register, handleSubmit, reset, control, formState: { isSubmitting } } = useForm<FieldValues>();
-  const [numPageForm, setNumPageForm] = useState<number>(1);
-  const [requiredData, setRequiredData] = useState<{
-    title: string;
-    company: string;
-  }>({ title: "", company: "" });
+const JobForm = ({ setAuthFormIsOpen, job }: JobFormProps): JSX.Element => {
+  const isEditing = !!job;
+  const {
+    register,
+    handleSubmit,
+    reset,
+    control,
+    watch,
+    formState: { isSubmitting },
+  } = useForm<FieldValues>({
+    defaultValues: job
+      ? {
+          ...job,
+          candidacyDate: job.candidacyDate
+            ? new Date(job.candidacyDate).toISOString().split("T")[0]
+            : undefined,
+          interviewDate: job.interviewDate
+            ? new Date(job.interviewDate).toISOString().slice(0, 16)
+            : undefined,
+          followUpDate: job.followUpDate
+            ? new Date(job.followUpDate).toISOString().split("T")[0]
+            : undefined,
+        }
+      : {},
+  });
 
-  const { createJob } = useJobStore();
+  const [numPageForm, setNumPageForm] = useState<number>(1);
+  const { createJob, updateJob } = useJobStore();
+
+  const titleValue = watch("title");
+  const companyValue = watch("company");
 
   const onSubmit = async (data: FieldValues): Promise<void> => {
     try {
-      await createJob(data);
+      if (isEditing && job) {
+        await updateJob(job.id, data);
+        toast.success("Candidature mise à jour !");
+      } else {
+        await createJob(data);
+        toast.success("Candidature ajoutée avec succès !");
+      }
       setAuthFormIsOpen(false);
       reset();
       setNumPageForm(1);
-      toast.success("Candidature ajoutée avec succès !");
     } catch (error) {
-      toast.error("Erreur lors de l'ajout de la candidature.");
+      toast.error(
+        isEditing
+          ? "Erreur lors de la modification."
+          : "Erreur lors de l'ajout.",
+      );
       console.error(error);
     }
   };
 
-  const isNextDisabled = requiredData.title === "" || requiredData.company === "";
+  const isNextDisabled = !titleValue || !companyValue;
 
   return (
     <DialogContent className="sm:max-w-[500px] bg-card border-border/40 shadow-2xl rounded-[2.5rem] p-0 overflow-hidden backdrop-blur-xl">
@@ -58,12 +91,14 @@ const JobForm = ({ setAuthFormIsOpen }: JobFormProps): JSX.Element => {
           <div className="flex items-center justify-between mb-2">
             <div className="flex gap-1.5">
               {[1, 2, 3].map((step) => (
-                <div 
-                  key={step} 
+                <div
+                  key={step}
                   className={cn(
                     "h-1.5 rounded-full transition-all duration-500",
-                    numPageForm === step ? "w-8 bg-primary" : "w-1.5 bg-primary/20"
-                  )} 
+                    numPageForm === step
+                      ? "w-8 bg-primary"
+                      : "w-1.5 bg-primary/20",
+                  )}
                 />
               ))}
             </div>
@@ -72,22 +107,18 @@ const JobForm = ({ setAuthFormIsOpen }: JobFormProps): JSX.Element => {
             </span>
           </div>
           <DialogTitle className="text-3xl font-black tracking-tighter">
-            Nouvelle Opportunité
+            {isEditing ? "Modifier l'offre" : "Nouvelle Opportunité"}
           </DialogTitle>
           <DialogDescription className="font-bold text-xs uppercase tracking-widest opacity-60">
-            Remplissez les détails pour suivre votre candidature
+            {isEditing
+              ? "Mettez à jour les détails de votre candidature"
+              : "Remplissez les détails pour suivre votre candidature"}
           </DialogDescription>
         </DialogHeader>
 
         <div className="p-8 py-6 space-y-6">
           <div className="min-h-[200px] animate-in fade-in slide-in-from-right-4 duration-500">
-            {numPageForm === 1 && (
-              <AuthFormPage1
-                register={register}
-                requiredData={requiredData}
-                setRequiredData={setRequiredData}
-              />
-            )}
+            {numPageForm === 1 && <AuthFormPage1 register={register} />}
             {numPageForm === 2 && (
               <AuthFormPage2 register={register} control={control} />
             )}
@@ -115,13 +146,13 @@ const JobForm = ({ setAuthFormIsOpen }: JobFormProps): JSX.Element => {
             <div className="flex gap-2">
               {numPageForm < 3 ? (
                 <>
-                  <Button 
-                    type="submit" 
+                  <Button
+                    type="submit"
                     variant="ghost"
                     className="h-12 px-6 rounded-2xl font-bold uppercase tracking-widest text-[10px] opacity-50 hover:opacity-100"
                     disabled={isSubmitting || isNextDisabled}
                   >
-                    Passer et créer
+                    Passer et {isEditing ? "modifier" : "créer"}
                   </Button>
                   <Button
                     type="button"
@@ -134,8 +165,8 @@ const JobForm = ({ setAuthFormIsOpen }: JobFormProps): JSX.Element => {
                   </Button>
                 </>
               ) : (
-                <Button 
-                  type="submit" 
+                <Button
+                  type="submit"
                   disabled={isSubmitting}
                   className="h-12 px-8 rounded-2xl font-black uppercase tracking-widest text-xs gap-x-2 shadow-xl shadow-primary/20 transition-all"
                 >
@@ -143,7 +174,7 @@ const JobForm = ({ setAuthFormIsOpen }: JobFormProps): JSX.Element => {
                     <Loader2 className="size-4 animate-spin" />
                   ) : (
                     <>
-                      Créer l'offre
+                      {isEditing ? "Modifier" : "Créer"} l'offre
                       <CheckCircle2 className="size-4" />
                     </>
                   )}

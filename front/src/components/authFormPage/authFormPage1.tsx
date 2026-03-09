@@ -4,10 +4,6 @@ import { Label } from "../ui/label";
 
 interface AuthFormPage1Props {
   register: UseFormRegister<FieldValues>;
-  setRequiredData: React.Dispatch<
-    React.SetStateAction<{ title: string; company: string }>
-  >;
-  requiredData: { title: string; company: string };
 }
 
 /**
@@ -19,8 +15,6 @@ interface AuthFormPage1Props {
  */
 const AuthFormPage1 = ({
   register,
-  setRequiredData,
-  requiredData,
 }: AuthFormPage1Props): JSX.Element => {
   return (
     <div className="space-y-6">
@@ -37,9 +31,6 @@ const AuthFormPage1 = ({
           type="text"
           placeholder="ex: Développeur Fullstack"
           className="h-12 bg-muted/30 border-border/40 rounded-xl focus:ring-primary/20 transition-all font-bold"
-          onChange={(e) =>
-            setRequiredData({ ...requiredData, title: e.target.value })
-          }
         />
       </div>
       <div className="space-y-2">
@@ -55,12 +46,6 @@ const AuthFormPage1 = ({
           type="text"
           placeholder="ex: Google, Startup..."
           className="h-12 bg-muted/30 border-border/40 rounded-xl focus:ring-primary/20 transition-all font-bold"
-          onChange={(e) =>
-            setRequiredData({
-              ...requiredData,
-              company: e.target.value,
-            })
-          }
         />
       </div>
     </div>
