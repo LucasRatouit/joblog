@@ -216,7 +216,10 @@ function App() {
               <AuthForm title="Bienvenue" description="Rejoignez-nous" submitText="S'inscrire" isLogin={false} />
             </Dialog>
             
-            <button className="h-16 px-10 rounded-full text-lg font-black border border-border/60 hover:bg-muted/30 transition-all flex items-center gap-x-2 group cursor-pointer">
+            <button 
+              onClick={() => window.location.href = "/demo"}
+              className="h-16 px-10 rounded-full text-lg font-black border border-border/60 hover:bg-muted/30 transition-all flex items-center gap-x-2 group cursor-pointer"
+            >
               <MousePointer2 className="size-5 group-hover:rotate-12 transition-transform" />
               Demo
             </button>

@@ -27,6 +27,8 @@ import { Dialog } from "./ui/dialog";
 import JobForm from "./jobForm";
 import { useState, useEffect } from "react";
 import { useUserStore } from "../stores/user";
+import { cn } from "../lib/utils";
+import { toast } from "sonner";
 
 /**
  * Main sidebar component for the application.
@@ -40,12 +42,17 @@ const AppSidebar = (): JSX.Element => {
   const location = useLocation();
   const [jobFormIsOpen, setJobFormIsOpen] = useState<boolean>(false);
   const { user, getUser } = useUserStore();
+  const isDemo = location.pathname.startsWith("/demo");
 
   useEffect(() => {
     getUser();
   }, [getUser]);
 
   const handleLogout = async (): Promise<void> => {
+    if (isDemo) {
+        window.location.href = "/";
+        return;
+    }
     try {
       await userLogout();
       window.location.href = "/";
@@ -54,11 +61,17 @@ const AppSidebar = (): JSX.Element => {
     }
   };
 
-  const navItems = [
-    { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
-    { icon: Briefcase, label: "Candidatures", href: "/applications" },
-    { icon: PieChart, label: "Statistiques", href: "/stats" },
-  ];
+  const navItems = isDemo 
+    ? [
+        { icon: LayoutDashboard, label: "Dashboard", href: "/demo" },
+        { icon: Briefcase, label: "Candidatures", href: "/demo-applications" },
+        { icon: PieChart, label: "Statistiques", href: "/demo-stats" },
+      ]
+    : [
+        { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
+        { icon: Briefcase, label: "Candidatures", href: "/applications" },
+        { icon: PieChart, label: "Statistiques", href: "/stats" },
+      ];
 
   return (
     <Sidebar variant="floating" className="border-r-0 shadow-2xl">
@@ -77,16 +90,25 @@ const AppSidebar = (): JSX.Element => {
 
       <SidebarContent className="px-3">
         <SidebarGroup>
-          <div className="px-3 mb-4">
+          <div className={cn("px-3 mb-4", isDemo && "cursor-not-allowed")}>
             <Dialog open={jobFormIsOpen} onOpenChange={setJobFormIsOpen}>
-              <Button 
+              <Button
                 className="w-full justify-start gap-x-2 h-11 rounded-xl shadow-lg shadow-primary/15 hover:shadow-primary/25 transition-all"
-                onClick={() => setJobFormIsOpen(true)}
+                disabled={isDemo}
+                onClick={() => {
+                  if (isDemo) {
+                    toast.info("L'ajout via ce bouton est désactivé en mode démo. Utilisez le bouton sur la page Dashboard.");
+                    return;
+                  }
+                  setJobFormIsOpen(true);
+                }}
               >
                 <PlusCircle className="size-4" />
-                <span className="font-bold text-xs uppercase tracking-widest">Nouveau Job</span>
+                <span className="font-bold text-xs uppercase tracking-widest">
+                  Nouveau Job
+                </span>
               </Button>
-              <JobForm setAuthFormIsOpen={setJobFormIsOpen} />
+              {!isDemo && <JobForm setAuthFormIsOpen={setJobFormIsOpen} />}
             </Dialog>
           </div>
 
@@ -99,13 +121,15 @@ const AppSidebar = (): JSX.Element => {
                     asChild
                     isActive={isActive}
                     className={`h-11 px-4 rounded-xl transition-all duration-300 ${
-                      isActive 
-                        ? "bg-primary/10 text-primary font-bold shadow-sm" 
+                      isActive
+                        ? "bg-primary/10 text-primary font-bold shadow-sm"
                         : "hover:bg-muted font-medium text-muted-foreground hover:text-foreground"
                     }`}
                   >
                     <Link to={item.href} className="flex items-center gap-x-3">
-                      <item.icon className={`size-5 ${isActive ? "text-primary" : "opacity-70"}`} />
+                      <item.icon
+                        className={`size-5 ${isActive ? "text-primary" : "opacity-70"}`}
+                      />
                       <span className="text-sm">{item.label}</span>
                     </Link>
                   </SidebarMenuButton>
@@ -128,7 +152,9 @@ const AppSidebar = (): JSX.Element => {
                 className="h-11 px-4 rounded-xl hover:bg-muted text-muted-foreground hover:text-foreground transition-all"
               >
                 <SunMoon className="size-5 opacity-70" />
-                <span className="text-sm">Thème {theme === "light" ? "sombre" : "clair"}</span>
+                <span className="text-sm">
+                  Thème {theme === "light" ? "sombre" : "clair"}
+                </span>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
@@ -142,19 +168,21 @@ const AppSidebar = (): JSX.Element => {
           </div>
           <div className="flex flex-col min-w-0">
             <span className="text-sm font-black truncate leading-none mb-1">
-              {user?.email || "Chargement..."}
+              {isDemo ? "Utilisateur Démo" : user?.email || "Chargement..."}
             </span>
-            <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest opacity-60">Mon compte</span>
+            <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest opacity-60">
+              Mon compte
+            </span>
           </div>
         </div>
-        
+
         <Button
           variant="destructive"
           className="w-full h-11 rounded-xl font-black text-xs uppercase tracking-widest shadow-xl shadow-destructive/10 hover:shadow-destructive/20 transition-all gap-x-2"
           onClick={handleLogout}
         >
           <LogOut size={14} />
-          Déconnexion
+          {isDemo ? "Quitter la Démo" : "Déconnexion"}
         </Button>
       </SidebarFooter>
     </Sidebar>
