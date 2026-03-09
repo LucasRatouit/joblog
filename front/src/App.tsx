@@ -92,8 +92,10 @@ function App() {
   const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
-    isLoggedIn().then(() => {
-      window.location.href = "/dashboard";
+    isLoggedIn().then((res) => {
+      if (res && res.user) {
+        window.location.href = "/dashboard";
+      }
     });
 
     const handleMouseMove = (e: MouseEvent) => {

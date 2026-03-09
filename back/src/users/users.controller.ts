@@ -3,7 +3,6 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import type { Request, Response } from 'express';
 import { User } from '@prisma/client';
-import * as jwt from 'jsonwebtoken';
 
 type Success = { user: User; token: string };
 type Error = { error: string; message: string };
@@ -13,22 +12,11 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  isLoggedIn(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
-    const token = req.cookies['token'] as string;
-
-    if (!token) {
-      res.status(401).send({ error: 'token', message: 'Aucun token valide' });
-      return;
+  isLoggedIn(@Req() req: Request) {
+    if (!req.user) {
+      return { message: 'Non connecté', user: null };
     }
-
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
-
-    if (!decoded) {
-      res.status(401).send({ error: 'token', message: 'Token invalide' });
-      return;
-    }
-
-    res.status(200).send({ message: 'Token valide', user: req.user });
+    return { message: 'Token valide', user: req.user };
   }
 
   @Post()
