@@ -201,7 +201,7 @@ function App() {
           </h1>
 
           <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed font-bold animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-200 fill-mode-both opacity-70 italic tracking-tight">
-            La plateforme chirurgicale pour dominer votre recherche d'emploi.
+            Le copilote stratégique pour centraliser vos opportunités et propulser votre carrière vers de nouveaux sommets.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-5 pt-10 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-400 fill-mode-both">
