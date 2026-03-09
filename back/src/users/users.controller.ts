@@ -16,15 +16,17 @@ export class UsersController {
   isLoggedIn(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
     const token = req.cookies['token'] as string;
 
-    if (!token)
+    if (!token) {
       res.status(401).send({ error: 'token', message: 'Aucun token valide' });
+      return;
+    }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET!);
 
-    if (!decoded)
-      return res
-        .status(401)
-        .send({ error: 'token', message: 'Token invalide' });
+    if (!decoded) {
+      res.status(401).send({ error: 'token', message: 'Token invalide' });
+      return;
+    }
 
     res.status(200).send({ message: 'Token valide', user: req.user });
   }

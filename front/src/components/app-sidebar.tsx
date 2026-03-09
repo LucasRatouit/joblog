@@ -4,7 +4,6 @@ import {
   LayoutDashboard,
   Briefcase,
   PieChart,
-  Settings,
   PlusCircle,
   User,
 } from "lucide-react";
@@ -26,7 +25,8 @@ import { Separator } from "./ui/separator";
 import { Link, useLocation } from "react-router";
 import { Dialog } from "./ui/dialog";
 import JobForm from "./jobForm";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useUserStore } from "../stores/user";
 
 /**
  * Main sidebar component for the application.
@@ -39,6 +39,11 @@ const AppSidebar = (): JSX.Element => {
   const { toggleSidebar } = useSidebar();
   const location = useLocation();
   const [jobFormIsOpen, setJobFormIsOpen] = useState<boolean>(false);
+  const { user, getUser } = useUserStore();
+
+  useEffect(() => {
+    getUser();
+  }, [getUser]);
 
   const handleLogout = async (): Promise<void> => {
     try {
@@ -126,24 +131,20 @@ const AppSidebar = (): JSX.Element => {
                 <span className="text-sm">Thème {theme === "light" ? "sombre" : "clair"}</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton className="h-11 px-4 rounded-xl hover:bg-muted text-muted-foreground hover:text-foreground transition-all">
-                <Settings className="size-5 opacity-70" />
-                <span className="text-sm">Paramètres</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
 
       <SidebarFooter className="p-4 border-t border-border/30 bg-muted/20">
-        <div className="flex items-center gap-x-3 px-2 mb-4">
-          <div className="size-10 rounded-xl bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center text-white shadow-lg ring-2 ring-background">
+        <div className="flex items-center gap-x-3 px-2 mb-4 overflow-hidden">
+          <div className="size-10 shrink-0 rounded-xl bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center text-white shadow-lg ring-2 ring-background">
             <User className="size-6" />
           </div>
-          <div className="flex flex-col overflow-hidden">
-            <span className="text-sm font-black truncate leading-none mb-1">Candidat</span>
-            <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest opacity-60">Pro plan</span>
+          <div className="flex flex-col min-w-0">
+            <span className="text-sm font-black truncate leading-none mb-1">
+              {user?.email || "Chargement..."}
+            </span>
+            <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest opacity-60">Mon compte</span>
           </div>
         </div>
         
