@@ -204,24 +204,29 @@ function App() {
             La plateforme chirurgicale pour dominer votre recherche d'emploi.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-10 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-400 fill-mode-both">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-5 pt-10 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-400 fill-mode-both">
             <Dialog>
               <DialogTrigger asChild>
-                <Button size="lg" className="h-16 px-14 rounded-full text-xl font-black shadow-[0_20px_40px_-10px_rgba(59,130,246,0.3)] hover:shadow-[0_25px_50px_-12px_rgba(59,130,246,0.5)] transition-all hover:-translate-y-1.5 gap-x-3 group">
-                  Get Started
-                  <ArrowRight className="size-6 group-hover:translate-x-2 transition-transform" />
+                <Button size="lg" className="h-16 px-12 rounded-full text-lg font-black bg-primary hover:bg-primary/90 text-white shadow-[0_20px_50px_-10px_rgba(59,130,246,0.5)] hover:shadow-[0_25px_60px_-12px_rgba(59,130,246,0.7)] transition-all duration-500 hover:-translate-y-1.5 gap-x-3 group relative overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                  <span className="relative z-10">Get Started</span>
+                  <ArrowRight className="relative z-10 size-5 group-hover:translate-x-1.5 transition-transform duration-500" />
                 </Button>
               </DialogTrigger>
               <AuthForm title="Bienvenue" description="Rejoignez-nous" submitText="S'inscrire" isLogin={false} />
             </Dialog>
             
-            <button 
+            <Button 
+              variant="outline"
+              size="lg"
               onClick={() => window.location.href = "/demo"}
-              className="h-16 px-10 rounded-full text-lg font-black border border-border/60 hover:bg-muted/30 transition-all flex items-center gap-x-2 group cursor-pointer"
+              className="h-16 px-10 rounded-full text-lg font-black border-border/60 bg-background/50 backdrop-blur-md hover:bg-muted/50 transition-all duration-500 hover:-translate-y-1 gap-x-4 group"
             >
-              <MousePointer2 className="size-5 group-hover:rotate-12 transition-transform" />
-              Demo
-            </button>
+              <div className="size-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all duration-500 shadow-inner">
+                <MousePointer2 className="size-4" />
+              </div>
+              Try Demo
+            </Button>
           </div>
 
           {/* Minimal Feature highlights */}
