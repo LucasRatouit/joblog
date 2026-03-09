@@ -162,10 +162,10 @@ function App() {
             </div>
           </div>
           
-          <div className="flex items-center gap-x-6">
+          <div className="flex items-center gap-x-3 sm:gap-x-6">
             <Dialog>
               <DialogTrigger asChild>
-                <button className="text-xs font-black uppercase tracking-widest hover:text-primary transition-colors cursor-pointer hidden md:block">Login</button>
+                <button className="text-[10px] sm:text-xs font-black uppercase tracking-widest hover:text-primary transition-colors cursor-pointer block">Login</button>
               </DialogTrigger>
               <AuthForm title="Bon retour !" description="Accédez à votre espace" submitText="Login" isLogin={true} />
             </Dialog>
@@ -174,7 +174,7 @@ function App() {
               <DialogTrigger asChild>
                 <Button className={`
                   rounded-full font-black shadow-xl shadow-primary/15 hover:shadow-primary/25 hover:scale-105 transition-all active:scale-95 transition-all
-                  ${scrolled ? "h-9 px-6 text-[10px] uppercase tracking-widest" : "h-12 px-8 text-sm"}
+                  ${scrolled ? "h-8 sm:h-9 px-4 sm:px-6 text-[9px] sm:text-[10px] uppercase tracking-widest" : "h-10 sm:h-12 px-5 sm:px-8 text-xs sm:text-sm"}
                 `}>S'inscrire</Button>
               </DialogTrigger>
               <AuthForm title="Bienvenue" description="Rejoignez-nous" submitText="S'inscrire" isLogin={false} />
