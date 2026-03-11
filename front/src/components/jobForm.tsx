@@ -18,7 +18,7 @@ import { cn } from "../lib/utils";
 import type { Job } from "../api/services/job";
 
 interface JobFormProps {
-  setAuthFormIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsJobFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
   job?: Job;
 }
 
@@ -28,7 +28,7 @@ interface JobFormProps {
  * @param {JobFormProps} props - Component properties
  * @returns {JSX.Element} The rendered job form dialog content
  */
-const JobForm = ({ setAuthFormIsOpen, job }: JobFormProps): JSX.Element => {
+const JobForm = ({ setIsJobFormOpen, job }: JobFormProps): JSX.Element => {
   const isEditing = !!job;
   const {
     register,
@@ -69,7 +69,7 @@ const JobForm = ({ setAuthFormIsOpen, job }: JobFormProps): JSX.Element => {
         await createJob(data);
         toast.success("Candidature ajoutée avec succès !");
       }
-      setAuthFormIsOpen(false);
+      setIsJobFormOpen(false);
       reset();
       setNumPageForm(1);
     } catch (error) {
